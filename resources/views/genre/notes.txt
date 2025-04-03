@@ -1,0 +1,15 @@
+ <div class="col-md-6 offset-3" style="margin-top: 100px">
+            Test
+        </div>
+
+"col-md-6 offset-3"
+
+is often used to center elements in a page
+a bootstrap page conssists of 12 columns
+and this gives the elemnt a 6 col range, with an offset of 3
+
+----------
+
+style="margin-top: 100px"
+
+gives a margin from top by 100px
