@@ -13,3 +13,39 @@ and this gives the elemnt a 6 col range, with an offset of 3
 style="margin-top: 100px"
 
 gives a margin from top by 100px
+
+-----------------------------------
+the select options for genre, might be useful later:
+note that the naming-convention for value here is mostly wrong, value"..." is an actual value that will be
+sent to the backend, thus it is best to user snake_case  such as:
+                          <option value="fiction">Fiction</option>
+                            <option value="non_fiction">Non-Fiction</option>
+to match the database attrubites.
+
+<select id="genre">
+    <option disabled selected>Choose Genre</option>
+    <option value="Fiction">Fiction</option>
+    <option value="Non-Fiction">Non-Fiction</option>
+    <option value="Science Fiction">Science Fiction</option>
+    <option value="Fantasy">Fantasy</option>
+    <option value="Mystery">Mystery</option>
+    <option value="Biography">Biography</option>
+    <option value="Self-Help">Self-Help</option>
+    <option value="Romance">Romance</option>
+    <option value="Thriller">Thriller</option>
+    <option value="Historical">Historical</option>
+    <option value="Poetry">Poetry</option>
+    <option value="Graphic Novel">Graphic Novel</option>
+    <option value="Children's">Children's</option>
+    <option value="Young Adult">Young Adult</option>
+    <option value="Cookbook">Cookbook</option>
+    <option value="Travel">Travel</option>
+    <option value="Health">Health</option>
+    <option value="Religion">Religion</option>
+    <option value="Philosophy">Philosophy</option>
+    <option value="Business">Business</option>
+    <option value="Technology">Technology</option>
+    <option value="True Crime">True Crime</option>
+    <option value="Memoir">Memoir</option>
+    <option value="Graphic Novel">Graphic Novel</option>
+</select>
