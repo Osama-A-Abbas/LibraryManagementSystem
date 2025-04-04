@@ -17,34 +17,37 @@
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-title"></h5> <!--model title here -->
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body"> <!--lables and fields can be added below this line-->
-                    <div class="form-group mb-3">
-                        <label for="bookName">Book Name</label> <!--label for book name -->
-                        <input type="text" name="bookName" class="form-control" placeholder="e.g. Harry Potter" />
-                        <!--input field for book name -->
+        <form id="bookForm">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitle"></h5> <!--model title here -->
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="form-group mb-3">
-                        <label for="genre">Genre</label> <!--label for genre -->
-                        <select name="genre" class="form-control"> <!--select field for genre -->
-                            <option disabled selected>Choose Genre...</option> <!--default option -->
-                            <option value="fiction">Fiction</option> <!--other options... -->
-                            <option value="non_fiction">Non-Fiction</option>
-                        </select>
+                    <div class="modal-body"> <!--lables and fields can be added below this line-->
+                        <div class="form-group mb-3">
+                            <label for="bookName">Book Name</label> <!--label for book name -->
+                            <input type="text" name="bookName" class="form-control"
+                                placeholder="e.g. Harry Potter" />
+                            <!--input field for book name -->
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="genre">Genre</label> <!--label for genre -->
+                            <select name="genre" class="form-control"> <!--select field for genre -->
+                                <option disabled selected>Choose Genre...</option> <!--default option -->
+                                <option value="fiction">Fiction</option> <!--other options... -->
+                                <option value="non_fiction">Non-Fiction</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <!--close button -->
-                    <button type="button" class="btn btn-primary" id="saveBtn"></button> <!--save button here -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <!--close button -->
+                        <button type="button" class="btn btn-primary" id="saveBtn"></button> <!--save button here -->
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 
     <!--  Trigger modal -->
@@ -63,13 +66,15 @@
 
     <script>
         $(document).ready(function() {
-            $('#modal-title').html('Add Book');
-            $('#saveBtn').html('Save Book');
+            $('#modalTitle').html('Add Book'); // grab the model-title (by it id) and set the html to Add Book
+            $('#saveBtn').html('Save Book'); // grab the saveBtn (by it id) and set the html to Save Book
+            var bookForm = $('#bookForm')[0]; // grab the form with the id bookForm and store as a variable || [0] is used to get all the elements in the form
 
             //grab the values and send the to the server
             $('#saveBtn').click(function() { // click event when the button is clicked this function will execute
-                var form = new FormData(this); // define *name* not *id* because we are getting it from form data
-                console.log(form)
+
+                var bookForm = new FormData(bookForm); // define *name* not *id* because we are getting it from form data || bookForm is passed as a param
+                console.log(bookForm)
             })
         });
     </script>
