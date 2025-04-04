@@ -94,6 +94,7 @@
                     // in case of success this function will execute
                     success: function(response) {
                         console.log(response)
+
                     },
                     // in case of error this function will execute
                     error: function(error) {
