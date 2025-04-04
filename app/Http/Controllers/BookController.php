@@ -10,4 +10,14 @@ class BookController extends Controller
     {
         return view('books.create');
     }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|min:1|max:255',
+            'genre' => 'required|string|min:1|max:255',
+        ]);
+
+        return 'success';
+    }
 }

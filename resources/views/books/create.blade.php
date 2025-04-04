@@ -5,12 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}" /> <!-- add csrf token globally -->
     <title>Create Book Genre</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
-        integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -26,10 +27,9 @@
                     </div>
                     <div class="modal-body"> <!--lables and fields can be added below this line-->
                         <div class="form-group mb-3">
-                            <label for="bookName">Book Name</label> <!--label for book name -->
-                            <input type="text" name="bookName" class="form-control"
-                                placeholder="e.g. Harry Potter" />
-                            <!--input field for book name -->
+                            <label for="title">Book Title</label> <!--label for book name -->
+                            <input type="text" name="title" class="form-control" placeholder="e.g. Harry Potter" /> <!--input field for book name -->
+                            <span id="titleError" class="text-danger"></span> <!--error message for book title -->
                         </div>
                         <div class="form-group mb-3">
                             <label for="genre">Genre</label> <!--label for genre -->
@@ -38,6 +38,7 @@
                                 <option value="fiction">Fiction</option> <!--other options... -->
                                 <option value="non_fiction">Non-Fiction</option>
                             </select>
+                            <span id="genreError" class="text-danger"></span> <!--error message for book genre -->
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -66,15 +67,44 @@
 
     <script>
         $(document).ready(function() {
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
             $('#modalTitle').html('Add Book'); // grab the model-title (by it id) and set the html to Add Book
             $('#saveBtn').html('Save Book'); // grab the saveBtn (by it id) and set the html to Save Book
-            var bookForm = $('#bookForm')[0]; // grab the form with the id bookForm and store as a variable || [0] is used to get all the elements in the form
+            var bookForm = $('#bookForm')[
+            0]; // grab the form with the id bookForm and store as a variable || [0] is used to get all the elements in the form
 
             //grab the values and send the to the server
             $('#saveBtn').click(function() { // click event when the button is clicked this function will execute
 
-                var bookForm = new FormData(bookForm); // define *name* not *id* because we are getting it from form data || bookForm is passed as a param
-                console.log(bookForm)
+                var formData = new FormData(bookForm); // define *name* not *id* because we are getting it from form data || bookForm is passed as a param
+
+                $.ajax({
+                    url: '{{ route('books.store') }}', // which route to send this request to
+                    method: 'POST', // method to use (GET, POST...), here POST since we are creating a book and sending data to the server
+                    processData: false,
+                    contentType: false,
+                    data: formData, // which data to send to the server, if you have multiple data you can use {}
+
+                    // in case of success this function will execute
+                    success: function(response) {
+                        console.log(response)
+                    },
+                    // in case of error this function will execute
+                    error: function(error) {
+                        if(error) {
+                            console.log(error.responseJSON.errors.title)
+                            $('#titleError').html(error.responseJSON.errors.title);
+                            $('#genreError').html(error.responseJSON.errors.genre);
+
+                        }
+                    }
+                });
             })
         });
     </script>
