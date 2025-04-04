@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class GenreController extends Controller
+class BookController extends Controller
 {
     public function create()
     {
-        return view('genre.create');
+        return view('books.create');
     }
 }

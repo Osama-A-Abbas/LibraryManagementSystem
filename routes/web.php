@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\GenreController;
+use App\Http\Controllers\BookController;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/genre/create', [GenreController::class, 'create'])->name('genre.create');
+Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
