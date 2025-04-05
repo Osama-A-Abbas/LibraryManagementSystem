@@ -17,18 +17,18 @@ class BookController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $request->validate([ //data validation
             'title' => 'required|string|min:1|max:255',
             'genre' => 'required|string|min:1|max:255',
         ]);
 
-        $this->book->create([
+        $this->book->create([ //create a new book
             'title' => $request->title,
             'genre' => $request->genre,
         ]);
 
-        return response()->json([
-            'message' => "Book Created Successfully",
-        ], 201);
+        return response()->json([ // return a json response
+            'success' => "Book Created Successfully",
+        ], 201); // it is important to return a correct status code here
     }
 }
