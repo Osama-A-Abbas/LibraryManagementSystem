@@ -19,7 +19,12 @@ class BookController extends Controller
         $books = Book::all();
 
         if($request->ajax()) {
-            return DataTables::of($books)->make(true);
+            return DataTables::of($books)
+            ->addColumn('action', function() {
+                return '<a href="javascript.void(0)" class="btn btn-info">Edit</a>';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
         }
     }
 

@@ -71,7 +71,7 @@
                         <th scope="col">#</th>
                         <th scope="col">Title</th>
                         <th scope="col">Genre</th>
-                        {{-- <th scope="col">Actions</th> --}}
+                        <th scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody> <!--we are not adding data  from here, we will add it from a backend query-->
@@ -117,9 +117,9 @@
                     {
                         data: 'genre'
                     },
-                    // {
-                    //     data: 'action'
-                    // },
+                    {
+                        data: 'action', name: 'action', orderable:false, searchable:false
+                    },
                 ]
             });
 
