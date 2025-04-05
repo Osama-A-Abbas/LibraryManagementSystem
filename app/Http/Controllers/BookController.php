@@ -22,8 +22,8 @@ class BookController extends Controller
             return DataTables::of($books)
                 ->addColumn('action', function ($row) {
                     return
-                        '<a href="javascript.void(0)" class="btn-sm btn btn-info editButton" data-id="' . $row->id . '">Edit</a>
-                        <a href="javascript.void(0)" class="btn-sm btn btn-danger deleteButton" data-id="' . $row->id . '">Delete</a>
+                        '<a href="javascript:void(0)" class="btn-sm btn btn-info editButton" data-id="' . $row->id . '">Edit</a>
+                        <a href="javascript:void(0)" class="btn-sm btn btn-danger deleteButton" data-id="' . $row->id . '">Delete</a>
                 ';
                 })
                 ->rawColumns(['action'])

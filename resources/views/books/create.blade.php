@@ -34,7 +34,8 @@
                     <div class="modal-body"> <!--lables and fields can be added below this line-->
                         <div class="form-group mb-3">
                             <label for="title">Book Title</label> <!--label for book title -->
-                            <input type="text" id="title" name="title" class="form-control" placeholder="e.g. Harry Potter" />
+                            <input type="text" id="title" name="title" class="form-control"
+                                placeholder="e.g. Harry Potter" />
                             <!--input field for book title -->
                             <span id="titleError" class="text-danger error-messages"></span>
                             <!--error message for book title -->
@@ -118,7 +119,10 @@
                         data: 'genre'
                     },
                     {
-                        data: 'action', name: 'action', orderable:false, searchable:false
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
                     },
                 ]
             });
@@ -131,7 +135,8 @@
             $('#modalTitle').html('Add Book'); // grab the model-title (by it id) and set the html to Add Book
             $('#saveBtn').html('Save Book'); // grab the saveBtn (by it id) and set the html to Save Book
             var bookForm = $('#bookForm')[
-            0]; // grab the form with the id bookForm and store as a variable || [0] is used to get all the elements in the form
+                0
+                ]; // grab the form with the id bookForm and store as a variable || [0] is used to get all the elements in the form
 
             //button click event, grabs the values and send em to the server
             $('#saveBtn').click(function() { // click event when the button is clicked this function will execute
@@ -140,7 +145,8 @@
 
                 //get the form values from bookForm and store them in a variable
                 var formData = new FormData(
-                bookForm); // define *name* not *id* because we are getting it from form data || bookForm is passed as a param
+                    bookForm
+                    ); // define *name* not *id* because we are getting it from form data || bookForm is passed as a param
 
                 //ajax request for sending the book data to the server
                 $.ajax({
@@ -156,7 +162,7 @@
                         if (response) {
                             Swal.fire({ // use sweet alert success alert
                                 title: response
-                                .success, // get the title from the backend response
+                                    .success, // get the title from the backend response
                                 icon: "success",
                                 draggable: true
                             });
@@ -166,12 +172,18 @@
                     error: function(error) {
                         if (error) {
                             $('#titleError').html(error.responseJSON.errors
-                            .title); // show the error message in the span under field input
+                                .title); // show the error message in the span under field input
                             $('#genreError').html(error.responseJSON.errors.genre);
                         }
                     }
                 });
             })
+
+
+            //edit button code
+            $('body').on('click', '.editButton', function() {
+                console.log('edit clicked');
+            });
         });
     </script>
 </body>
