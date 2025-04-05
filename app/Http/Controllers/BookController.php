@@ -11,20 +11,23 @@ class BookController extends Controller
 {
     public function __construct(
         protected Book $book,
-    ){}
+    ) {}
 
 
     public function index(Request $request)
     {
         $books = Book::select('id', 'title', 'genre');
 
-        if($request->ajax()) {
+        if ($request->ajax()) {
             return DataTables::of($books)
-            ->addColumn('action', function() {
-                return '<a href="javascript.void(0)" class="btn-sm btn btn-info">Edit</a>';
-            })
-            ->rawColumns(['action'])
-            ->make(true);
+                ->addColumn('action', function ($row) {
+                    return
+                        '<a href="javascript.void(0)" class="btn-sm btn btn-info editButton" data-id="' . $row->id . '">Edit</a>
+                        <a href="javascript.void(0)" class="btn-sm btn btn-danger deleteButton" data-id="' . $row->id . '">Delete</a>
+                ';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
         }
     }
 
@@ -56,15 +59,15 @@ class BookController extends Controller
 
 
 // public function index(Request $request)
-    {
-        $books = Book::select('id', 'title', 'genre');
+    // {
+    //     $books = Book::select('id', 'title', 'genre');
 
-        if($request->ajax()) {
-            return DataTables::of($books)
-            ->addColumn('action', function() {
-                return '<a href="javascript.void(0)" class="btn-sm btn btn-info">Edit</a>';
-            })
-            ->rawColumns(['action'])
-            ->make(true);
-        }
-    }
+    //     if($request->ajax()) {
+    //         return DataTables::of($books)
+    //         ->addColumn('action', function() {
+    //             return '<a href="javascript.void(0)" class="btn-sm btn btn-info">Edit</a>';
+    //         })
+    //         ->rawColumns(['action'])
+    //         ->make(true);
+    //     }
+    // }
