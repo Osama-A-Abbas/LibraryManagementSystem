@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\BookController;
-use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/books/index', [BookController::class, 'index'])->name('books.index');

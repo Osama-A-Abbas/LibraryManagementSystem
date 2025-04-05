@@ -16,12 +16,12 @@ class BookController extends Controller
 
     public function index(Request $request)
     {
-        $books = Book::all();
+        $books = Book::select('id', 'title', 'genre');
 
         if($request->ajax()) {
             return DataTables::of($books)
             ->addColumn('action', function() {
-                return '<a href="javascript.void(0)" class="btn btn-info">Edit</a>';
+                return '<a href="javascript.void(0)" class="btn-sm btn btn-info">Edit</a>';
             })
             ->rawColumns(['action'])
             ->make(true);
@@ -56,21 +56,15 @@ class BookController extends Controller
 
 
 // public function index(Request $request)
-//     {
-//         $books = Book::all();
+    {
+        $books = Book::select('id', 'title', 'genre');
 
-//         if($request->ajax) {
-//             return DataTables::of($books)
-//                 ->addColumn('action', function ($book) {
-//                     return '<a href="'.route('books.edit', $book->id).'" class="btn btn-primary">Edit</a>
-//                             <form action="'.route('books.destroy', $book->id).'" method="POST" style="display:inline;">
-//                                 '.csrf_field().'
-//                                 '.method_field('DELETE').'
-//                                 <button type="submit" class="btn btn-danger">Delete</button>
-//                             </form>';
-//                 })
-//                 ->make(true);
-//         } else {
-//             return DataTables::of($books)->make(true);
-//         }
-//     }
+        if($request->ajax()) {
+            return DataTables::of($books)
+            ->addColumn('action', function() {
+                return '<a href="javascript.void(0)" class="btn-sm btn btn-info">Edit</a>';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+        }
+    }
