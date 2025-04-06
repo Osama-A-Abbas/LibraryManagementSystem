@@ -182,7 +182,21 @@
 
             //edit button code
             $('body').on('click', '.editButton', function() {
-                console.log('edit clicked');
+                var id = $(this).data('id');
+
+                $.ajax({
+                    url: '{{ route("books.edit", '') }}' + '/' + id +'/edit',
+                    type: 'GET',
+
+                    success: function(response) {
+                        console.log(response)
+                    },
+
+                    error: function(error) {
+                        console.log(error)
+                    }
+
+                });
             });
         });
     </script>

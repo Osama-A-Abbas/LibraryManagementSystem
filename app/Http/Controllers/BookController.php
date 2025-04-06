@@ -53,6 +53,11 @@ class BookController extends Controller
             'success' => "Book Created Successfully",
         ], 201); // it is important to return a correct status code here
     }
+
+    public function edit($id)
+    {
+        return $id;
+    }
 }
 
 
