@@ -136,7 +136,7 @@
             $('#saveBtn').html('Save Book'); // grab the saveBtn (by it id) and set the html to Save Book
             var bookForm = $('#bookForm')[
                 0
-                ]; // grab the form with the id bookForm and store as a variable || [0] is used to get all the elements in the form
+            ]; // grab the form with the id bookForm and store as a variable || [0] is used to get all the elements in the form
 
             //button click event, grabs the values and send em to the server
             $('#saveBtn').click(function() { // click event when the button is clicked this function will execute
@@ -146,7 +146,7 @@
                 //get the form values from bookForm and store them in a variable
                 var formData = new FormData(
                     bookForm
-                    ); // define *name* not *id* because we are getting it from form data || bookForm is passed as a param
+                ); // define *name* not *id* because we are getting it from form data || bookForm is passed as a param
 
                 //ajax request for sending the book data to the server
                 $.ajax({
@@ -184,14 +184,23 @@
             $('body').on('click', '.editButton', function() {
                 var id = $(this).data('id');
 
-                $.ajax({                        //book id
-                    url: '{{ url("books") }}/' + id + '/edit',
+                $.ajax({ //book id
+                    url: '{{ url('books') }}/' + id + '/edit',
                     type: 'GET',
 
                     success: function(response) {
-                        $('#modalTitle').html('Edit Book'); // grab the model-title (by it id) and set the html to Add Book
-                        $('#saveBtn').html('Update Book'); // grab the saveBtn (by it id) and set the html to Save Book
                         $('.ajax-modal').modal('show'); // show the modal
+                        $('#modalTitle').html('Edit Book'); // set modalTitle to Edit Book
+                        $('#saveBtn').html('Update Book'); // set saveBtn to Update Book
+
+                        //when pressing edit, set the title field value to the response.title
+                        $('#title').val(response.title);
+                        //pre-select the genre from the response
+                        $('#genre').append($('<option>', {
+                            value: response.id,
+                            text: response.genre,
+                            selected: true
+                        }));
                     },
 
                     error: function(error) {
