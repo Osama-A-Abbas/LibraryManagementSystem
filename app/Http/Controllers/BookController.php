@@ -54,9 +54,12 @@ class BookController extends Controller
         ], 201); // it is important to return a correct status code here
     }
 
-    public function edit($id)
+    public function edit(Book $book)
     {
-        return $id;
+        if(! $book){
+            abort(404, 'Book not found');
+        }
+        return $book->only(['id', 'title', 'genre']);
     }
 }
 

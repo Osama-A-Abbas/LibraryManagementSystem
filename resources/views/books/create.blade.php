@@ -184,12 +184,14 @@
             $('body').on('click', '.editButton', function() {
                 var id = $(this).data('id');
 
-                $.ajax({
-                    url: '{{ route("books.edit", '') }}' + '/' + id +'/edit',
+                $.ajax({                        //book id
+                    url: '{{ url("books") }}/' + id + '/edit',
                     type: 'GET',
 
                     success: function(response) {
-                        console.log(response)
+                        $('#modalTitle').html('Edit Book'); // grab the model-title (by it id) and set the html to Add Book
+                        $('#saveBtn').html('Update Book'); // grab the saveBtn (by it id) and set the html to Save Book
+                        $('.ajax-modal').modal('show'); // show the modal
                     },
 
                     error: function(error) {
