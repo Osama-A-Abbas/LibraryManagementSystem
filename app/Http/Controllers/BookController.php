@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Validator;
 
 class BookController extends Controller
 {
+
+    public function __construct(
+        protected Book $book,
+    ){}
+
     public function create()
     {
         return view('books.create');
@@ -15,7 +20,7 @@ class BookController extends Controller
 
     public function index()
     {
-        $books = Book::select(['id', 'title', 'genre']);
+        $books = $this->book->select(['id', 'title', 'genre']);
         return datatables()->of($books)
             ->editColumn('genre', function ($book) {
                 return ucfirst($book->genre); // Capitalize the first letter of the genre
@@ -39,14 +44,13 @@ class BookController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        Book::create($request->all());
+        $this->book->create($request->all());
 
         return response()->json(['success' => 'Book created successfully.']);
     }
 
-    public function edit($id)
+    public function edit(Book $book)
     {
-        $book = Book::findOrFail($id);
         return response()->json([
             'id' => $book->id,
             'title' => $book->title,
@@ -54,7 +58,7 @@ class BookController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Book $book)
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
@@ -65,15 +69,13 @@ class BookController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $book = Book::findOrFail($id);
         $book->update($request->all());
 
         return response()->json(['success' => 'Book updated successfully.']);
     }
 
-    public function destroy($id)
+    public function destroy(Book $book)
     {
-        $book = Book::findOrFail($id);
         $book->delete();
 
         return response()->json(['success' => 'Book deleted successfully.']);
