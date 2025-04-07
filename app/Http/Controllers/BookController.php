@@ -20,11 +20,13 @@ class BookController extends Controller
 
         if ($request->ajax()) {
             return DataTables::of($books)
+                ->editColumn('genre', function ($book) {
+                    return ucfirst($book->genre); // Capitalize the first letter of the genre
+                })
                 ->addColumn('action', function ($row) {
                     return
                         '<a href="javascript:void(0)" class="btn-sm btn btn-info editButton" data-id="' . $row->id . '">Edit</a>
-                        <a href="javascript:void(0)" class="btn-sm btn btn-danger deleteButton" data-id="' . $row->id . '">Delete</a>
-                ';
+                        <a href="javascript:void(0)" class="btn-sm btn btn-danger deleteButton" data-id="' . $row->id . '">Delete</a>';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -74,10 +76,23 @@ class BookController extends Controller
 
     public function edit(Book $book)
     {
-        if(! $book){
+        if (! $book) {
             abort(404, 'Book not found');
         }
         return $book->only(['id', 'title', 'genre']);
+    }
+
+    public function destroy(Book $book)
+    {
+        try {
+            $book->delete();
+            return response()->json(['success' => "Book Deleted Successfully"], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Something went wrong while deleting the book.',
+                'message' => $e->getMessage() // optional: remove in production
+            ], 500);
+        }
     }
 }
 

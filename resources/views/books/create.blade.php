@@ -128,9 +128,10 @@
                 ]
             });
 
-            // Reset form when modal is hidden
+            // Reset form when modal is hidden, these could be moved to the saveBtn success event
             $('.ajax-modal').on('hidden.bs.modal', function() {
                 $('#bookForm')[0].reset();
+                $('#book_id').val(''); // Clear the book_id
                 $('.error-messages').html(''); // Clear any error messages
                 $('#modalTitle').html('Add Book'); // Reset modal title
                 $('#saveBtn').html('Save Book'); // Reset button text
@@ -145,6 +146,10 @@
 
             //button click event, grabs the values and send em to the server
             $('#saveBtn').click(function() { // click event when the button is clicked this function will execute
+
+                $('#saveBtn').attr('disabled', true);
+                $('#saveBtn').html('Saving...')
+
                 $('.error-messages').html(''); // Clear error messages
 
                 var formData = new FormData($('#bookForm')[0]); // Get form data
@@ -166,7 +171,9 @@
                     data: formData,
 
                     success: function(response) {
-                        $('#book_id').val('');
+                        // $('#book_id').val('');
+                        $('#saveBtn').attr('disabled', false);
+                        $('#saveBtn').html('Save Book')
                         $('.ajax-modal').modal('hide'); // Hide modal
                         table.ajax.reload(); // Refresh DataTable
                         // table.draw(); // can be used here because serverSide is true
@@ -177,6 +184,9 @@
                         });
                     },
                     error: function(error) {
+                        $('#saveBtn').attr('disabled', false);
+                        $('#saveBtn').html('Save Book')
+                        
                         if (error.responseJSON && error.responseJSON.errors) {
                             $('#titleError').html(error.responseJSON.errors
                                 .title); // Show title error
@@ -215,13 +225,33 @@
                         // $('#genre').append( '<option value="'+response.genre+'">'+response.genre+'</option>' );
                         // $('#genre').empty().append('<option value="' + response.genre + '">' +
                         //     capitalizeFirstLetter(response.genre) + '</option>');
-                        var upperCaseGenre = capitalizeFirstLetter(response.genre);
-                        $('#genre').val(upperCaseGenre);
-                        // table.ajax.reload(); //refresh the data table
+                        $('#genre').val(response.genre);                     // table.ajax.reload(); //refresh the data table
 
                     },
                     error: function(error) {
                         console.log(error)
+                    }
+                });
+            });
+
+
+            //delete button code
+            $('body').on('click', '.deleteButton', function() {
+                var bookId = $(this).data('id');
+
+                $.ajax({
+                    url: '{{ url("books") }}/' + bookId, // Append the book ID to the URL
+                    type: 'DELETE', // Specify the HTTP method
+                    success: function(response) {
+                        table.ajax.reload(); // Refresh the DataTable
+                        Swal.fire({
+                            title: response.success, // Show success message
+                            icon: "success",
+                            draggable: true
+                        });
+                    },
+                    error: function(error) {
+                        console.error(error); // Log any errors
                     }
                 });
             });
