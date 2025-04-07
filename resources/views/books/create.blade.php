@@ -32,6 +32,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body"> <!--lables and fields can be added below this line-->
+                        <input type="hidden" name="book_id" id="book_id">
                         <div class="form-group mb-3">
                             <label for="title">Book Title</label> <!--label for book title -->
                             <input type="text" id="title" name="title" class="form-control"
@@ -127,9 +128,13 @@
                 ]
             });
 
-
-
-
+            // Reset form when modal is hidden
+            $('.ajax-modal').on('hidden.bs.modal', function() {
+                $('#bookForm')[0].reset();
+                $('.error-messages').html(''); // Clear any error messages
+                $('#modalTitle').html('Add Book'); // Reset modal title
+                $('#saveBtn').html('Save Book'); // Reset button text
+            });
 
             //Control the text on modalTitle and SaveBtn
             $('#modalTitle').html('Add Book'); // grab the model-title (by it id) and set the html to Add Book
@@ -160,6 +165,7 @@
                     // in case of success this function will execute
                     success: function(response) {
                         $('.ajax-modal').modal('hide'); // hide the modal after success
+                        $('.ajax-modal').modal('hide');
                         table.ajax.reload(); //refresh the data table
                         if (response) {
                             Swal.fire({ // use sweet alert success alert
@@ -197,6 +203,7 @@
 
                         //when pressing edit, set the title field value to the response.title
                         $('#title').val(response.title);
+                        $('#book_id').val(response.id);
                         //pre-select the genre from the response
                         // $('#genre').append($('<option>', {
                         //     value: response.id,
@@ -213,15 +220,12 @@
                     error: function(error) {
                         console.log(error)
                     }
-
-
-
                 });
-
-                function capitalizeFirstLetter(string) {
-                    return string.charAt(0).toUpperCase() + string.slice(1);
-                }
             });
+
+            function capitalizeFirstLetter(string) {
+                return string.charAt(0).toUpperCase() + string.slice(1);
+            }
         });
     </script>
 </body>

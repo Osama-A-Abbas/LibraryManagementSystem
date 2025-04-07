@@ -62,7 +62,7 @@ class BookController extends Controller
             'genre' => 'required|string|min:1|max:255',
         ]);
 
-        $book->update($request());
+        $book->update($request()->only(['title', 'genre']));
 
         return response()->json([ // return a json response
             'success' => "Book updated Successfully",
