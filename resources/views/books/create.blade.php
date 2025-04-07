@@ -186,7 +186,7 @@
                     error: function(error) {
                         $('#saveBtn').attr('disabled', false);
                         $('#saveBtn').html('Save Book')
-                        
+
                         if (error.responseJSON && error.responseJSON.errors) {
                             $('#titleError').html(error.responseJSON.errors
                                 .title); // Show title error
@@ -225,7 +225,8 @@
                         // $('#genre').append( '<option value="'+response.genre+'">'+response.genre+'</option>' );
                         // $('#genre').empty().append('<option value="' + response.genre + '">' +
                         //     capitalizeFirstLetter(response.genre) + '</option>');
-                        $('#genre').val(response.genre);                     // table.ajax.reload(); //refresh the data table
+                        $('#genre').val(response
+                        .genre); // table.ajax.reload(); //refresh the data table
 
                     },
                     error: function(error) {
@@ -239,21 +240,23 @@
             $('body').on('click', '.deleteButton', function() {
                 var bookId = $(this).data('id');
 
-                $.ajax({
-                    url: '{{ url("books") }}/' + bookId, // Append the book ID to the URL
-                    type: 'DELETE', // Specify the HTTP method
-                    success: function(response) {
-                        table.ajax.reload(); // Refresh the DataTable
-                        Swal.fire({
-                            title: response.success, // Show success message
-                            icon: "success",
-                            draggable: true
-                        });
-                    },
-                    error: function(error) {
-                        console.error(error); // Log any errors
-                    }
-                });
+                if (confirm('Press OK to confirm deleting the book')) {
+                    $.ajax({
+                        url: '{{ url('books') }}/' + bookId, // Append the book ID to the URL
+                        type: 'DELETE', // Specify the HTTP method
+                        success: function(response) {
+                            table.ajax.reload(); // Refresh the DataTable
+                            Swal.fire({
+                                title: response.success, // Show success message
+                                icon: "success",
+                                draggable: true
+                            });
+                        },
+                        error: function(error) {
+                            console.error(error); // Log any errors
+                        }
+                    });
+                }
             });
 
             function capitalizeFirstLetter(string) {
