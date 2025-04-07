@@ -1,26 +1,35 @@
-$('body').on('click', '.editButton', function() {
-    var id = $(this).data('id');
+/**
+ * Books Edit Handlers
+ *
+ * This file contains the code for handling the book edit functionality.
+ */
 
-    $.ajax({
-        url: '/books/' + id + '/edit',
-        type: 'GET',
+function initEditHandlers(table) {
+    // Edit button click handler
+    $('body').on('click', '.editButton', function() {
+        var id = $(this).data('id');
 
-        success: function(response) {
-            $('.ajax-modal').modal('show');
-            $('#modalTitle').html('Edit Book');
-            $('#saveBtn').html('Update Book');
+        $.ajax({
+            url: '/books/' + id + '/edit',
+            type: 'GET',
 
-            $('#title').val(response.title);
-            $('#book_id').val(response.id);
-            $('#genre').val(response.genre);
-        },
+            success: function(response) {
+                $('.ajax-modal').modal('show');
+                $('#modalTitle').html('Edit Book');
+                $('#saveBtn').html('Update Book');
 
-        error: function(error) {
-            Swal.fire({
-                title: "Error!",
-                text: "Failed to load book data.",
-                icon: "error"
-            });
-        }
+                $('#title').val(response.title);
+                $('#book_id').val(response.id);
+                $('#genre').val(response.genre);
+            },
+
+            error: function(error) {
+                Swal.fire({
+                    title: "Error!",
+                    text: "Failed to load book data.",
+                    icon: "error"
+                });
+            }
+        });
     });
-});
+}

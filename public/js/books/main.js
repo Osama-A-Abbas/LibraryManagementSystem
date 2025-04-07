@@ -1,11 +1,11 @@
 /**
- * Books Management - Main JavaScript File
+ * Books Main JavaScript
  *
- * This file initializes all the books functionality.
+ * This file initializes all the book management functionality.
  */
 
 $(document).ready(function() {
-    // Setup CSRF token for all AJAX requests
+    // Set up CSRF token for all AJAX requests
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -13,11 +13,14 @@ $(document).ready(function() {
     });
 
     // Initialize DataTable
-    const booksTable = initDataTable();
+    var table = initDataTable();
 
     // Initialize modal handlers
-    initModalHandlers(booksTable);
+    initModalHandlers(table);
 
-    // Initialize delete button handlers
-    initDeleteHandlers(booksTable);
+    // Initialize edit handlers
+    initEditHandlers(table);
+
+    // Initialize delete handlers
+    initDeleteHandlers(table);
 });
