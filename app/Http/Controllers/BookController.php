@@ -21,7 +21,7 @@ class BookController extends Controller
 
     public function index()
     {
-        $books = $this->book->select(['id', 'title', 'genre', 'author', 'description']);
+        $books = $this->book->select(['id', 'title', 'genre', 'author', 'description', 'published_at']);
         return datatables()->of($books)
             ->editColumn('genre', function ($book) {
                 return ucfirst($book->genre); // Capitalize the first letter of the genre
@@ -48,7 +48,8 @@ class BookController extends Controller
             'title' => $book->title,
             'genre' => $book->genre,
             'author' => $book->author,
-            'description' => $book->description
+            'description' => $book->description,
+            'published_at' => $book->published_at
         ]);
     }
 

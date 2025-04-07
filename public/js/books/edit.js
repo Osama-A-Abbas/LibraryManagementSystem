@@ -23,6 +23,7 @@ function initEditHandlers(table) {
                 $('#genre').val(response.genre);
                 $('#author').val(response.author);
                 $('#description').val(response.description);
+                $('#published_at').val(response.published_at);
             },
 
             error: function(error) {

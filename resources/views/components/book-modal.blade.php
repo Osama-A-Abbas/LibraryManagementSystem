@@ -44,6 +44,13 @@
                         <span id="descriptionError" class="text-danger error-messages"></span>
                     </div>
 
+                    <!-- Published at, id = published_at-->
+                    <div class="form-group mb-3">
+                        <label for="published_at">Published At</label>
+                        <input type="date" id="published_at" name="published_at" class="form-control" />
+                        <span id="publishedAtError" class="text-danger error-messages"></span>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
