@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Book\BookRequest;
 use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -33,18 +34,8 @@ class BookController extends Controller
             ->make(true);
     }
 
-    public function store(Request $request)
+    public function store(BookRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|string|max:255',
-            'genre' => 'required|string|max:255',
-            'author' => 'required|string|max:255',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
         $this->book->create($request->all());
 
         return response()->json(['success' => 'Book created successfully.']);
@@ -60,18 +51,8 @@ class BookController extends Controller
         ]);
     }
 
-    public function update(Request $request, Book $book)
+    public function update(BookRequest $request, Book $book)
     {
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|string|max:255',
-            'genre' => 'required|string|max:255',
-            'author' => 'required|string|max:255',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
         $book->update($request->all());
 
         return response()->json(['success' => 'Book updated successfully.']);
