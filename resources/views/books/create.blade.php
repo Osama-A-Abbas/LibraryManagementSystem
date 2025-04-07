@@ -46,7 +46,7 @@
                             <select id="genre" name="genre" class="form-control"> <!--select field for genre -->
                                 <option disabled selected>Choose Genre...</option> <!--default option -->
                                 <option value="fiction">Fiction</option> <!--other options... -->
-                                <option value="non_fiction">Non-Fiction</option>
+                                <option value="nonfiction">Nonfiction</option>
                             </select>
                             <span id="genreError" class="text-danger error-messages"></span>
                             <!--error message for book genre -->
@@ -166,8 +166,10 @@
                     data: formData,
 
                     success: function(response) {
+                        $('#book_id').val('');
                         $('.ajax-modal').modal('hide'); // Hide modal
                         table.ajax.reload(); // Refresh DataTable
+                        // table.draw(); // can be used here because serverSide is true
                         Swal.fire({
                             title: response.success, // Show success message
                             icon: "success",
@@ -204,16 +206,17 @@
                         //when pressing edit, set the title field value to the response.title
                         $('#title').val(response.title);
                         $('#book_id').val(response.id);
-                        //pre-select the genre from the response
+                        // //pre-select the genre from the response
                         // $('#genre').append($('<option>', {
                         //     value: response.id,
                         //     text: response.genre,
                         //     selected: true
                         // }));
-                        // $('#genre').append( '<option value="'+response.id+'">'+response.genre+'</option>' ).selectmenu('refresh');
-                        // $('#genre').empty().append('<option value="' + response.id + '">' +
+                        // $('#genre').append( '<option value="'+response.genre+'">'+response.genre+'</option>' );
+                        // $('#genre').empty().append('<option value="' + response.genre + '">' +
                         //     capitalizeFirstLetter(response.genre) + '</option>');
-                        $('#genre').val(response.genre);
+                        var upperCaseGenre = capitalizeFirstLetter(response.genre);
+                        $('#genre').val(upperCaseGenre);
                         // table.ajax.reload(); //refresh the data table
 
                     },
