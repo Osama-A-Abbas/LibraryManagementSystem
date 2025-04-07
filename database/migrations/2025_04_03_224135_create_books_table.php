@@ -15,6 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('genre');
+            $table->string('author')->nullable();
+            $table->string('cover_page')->nullable(); // URL or path to the cover image
+            $table->text('description')->nullable();
+            $table->timestamp('published_at')->nullable(); // Date when the book was published
+            $table->integer('number_of_copies')->default(0); // Number of copies available in stock
+            $table->boolean('is_available')->default(true); // Indicates if the book is available for borrowing
+
             $table->timestamps();
         });
     }
