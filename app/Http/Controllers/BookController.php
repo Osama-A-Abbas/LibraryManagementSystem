@@ -12,7 +12,7 @@ class BookController extends Controller
 
     public function __construct(
         protected Book $book,
-    ){}
+    ) {}
 
     public function create()
     {
@@ -21,14 +21,14 @@ class BookController extends Controller
 
     public function index()
     {
-        $books = $this->book->select(['id', 'title', 'genre', 'author', 'description', 'published_at']);
+        $books = $this->book->select(['id', 'title', 'genre', 'author', 'description', 'published_at', 'cover_page']);
         return datatables()->of($books)
             ->editColumn('genre', function ($book) {
                 return ucfirst($book->genre); // Capitalize the first letter of the genre
             })
-            ->addColumn('action', function($row) {
-                return '<a href="javascript:void(0)" class="btn btn-sm btn-info editButton" data-id="'.$row->id.'">Edit</a>
-                        <a href="javascript:void(0)" class="btn btn-sm btn-danger deleteButton" data-id="'.$row->id.'">Delete</a>';
+            ->addColumn('action', function ($row) {
+                return '<a href="javascript:void(0)" class="btn btn-sm btn-info editButton" data-id="' . $row->id . '">Edit</a>
+                        <a href="javascript:void(0)" class="btn btn-sm btn-danger deleteButton" data-id="' . $row->id . '">Delete</a>';
             })
             ->rawColumns(['action'])
             ->make(true);
@@ -36,7 +36,27 @@ class BookController extends Controller
 
     public function store(BookRequest $request)
     {
-        $this->book->create($request->all());
+        // $this->book->create($request->only(['id', 'title', 'genre', 'author', 'description', 'published_at',]));
+        $book = new Book();
+        $book->title = $request->title;
+        $book->genre = $request->genre;
+        $book->author = $request->author;
+        $book->description = $request->description;
+        $book->published_at = $request->published_at;
+
+        // Get the original file extension
+        $extension = $request->file('cover_page')->getClientOriginalExtension();
+        // Create a unique filename with timestamp
+        $fileName = uniqid() . '_' . time() . '.' . $extension;
+        // Store the file in the public/books/covers directory
+        $path = $request->file('cover_page')->storeAs(
+            'books/covers',
+            $fileName,
+            'public'
+        );
+        // Save the path to the database
+        $book->cover_page = $path;
+        $book->save();
 
         return response()->json(['success' => 'Book created successfully.']);
     }
@@ -49,7 +69,8 @@ class BookController extends Controller
             'genre' => $book->genre,
             'author' => $book->author,
             'description' => $book->description,
-            'published_at' => $book->published_at
+            'published_at' => $book->published_at,
+            'cover_page' => $book->cover_page
         ]);
     }
 

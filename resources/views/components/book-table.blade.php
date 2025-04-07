@@ -11,6 +11,7 @@
                     <th scope="col">Author</th>
                     <th scope="col">description</th>
                     <th scope="col">published_at</th>
+                    <th scope="col">cover_page</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>

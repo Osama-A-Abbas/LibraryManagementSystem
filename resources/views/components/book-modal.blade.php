@@ -51,6 +51,14 @@
                         <span id="publishedAtError" class="text-danger error-messages"></span>
                     </div>
 
+                    <!-- Cover page, id = cover_page-->
+                    <div class="form-group mb-3">
+                        <label for="cover_page">Cover Page</label>
+                        <input type="file" id="cover_page" name="cover_page" class="form-control" />
+                        <span id="coverPageError" class="text-danger error-messages"></span>
+                    </div>
+
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

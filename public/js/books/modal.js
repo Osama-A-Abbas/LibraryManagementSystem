@@ -60,6 +60,7 @@ function initModalHandlers(table) {
                     $('#authorError').html(error.responseJSON.errors.author);
                     $('#descriptionError').html(error.responseJSON.errors.description);
                     $('#publishedAtError').html(error.responseJSON.errors.published_at);
+                    $('#coverPageError').html(error.responseJSON.errors.cover_page);
                 } else {
                     console.error(error);
                 }

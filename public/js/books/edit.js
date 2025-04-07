@@ -24,6 +24,7 @@ function initEditHandlers(table) {
                 $('#author').val(response.author);
                 $('#description').val(response.description);
                 $('#published_at').val(response.published_at);
+                $('#cover_page').val(response.cover_page);
             },
 
             error: function(error) {
