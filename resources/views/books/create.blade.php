@@ -145,46 +145,43 @@
 
             //button click event, grabs the values and send em to the server
             $('#saveBtn').click(function() { // click event when the button is clicked this function will execute
+                $('.error-messages').html(''); // Clear error messages
 
-                $('.error-messages').html(''); // clear error messages
+                var formData = new FormData($('#bookForm')[0]); // Get form data
+                var bookId = $('#book_id').val(); // Check if book_id is set
 
-                //get the form values from bookForm and store them in a variable
-                var formData = new FormData(
-                    bookForm
-                ); // define *name* not *id* because we are getting it from form data || bookForm is passed as a param
+                var url = bookId ? '{{ url('books') }}/' + bookId + '/update' :
+                    '{{ route('books.store') }}'; // Determine URL
+                var method = bookId ? 'PUT' : 'POST'; // Determine HTTP method
 
-                if ($('#book_id').val()){
-                    console.log($('#book_id').val());
+                if (method === 'PUT') {
+                    formData.append('_method', 'PUT'); // Add _method field for PUT requests
                 }
 
-                //ajax request for sending the book data to the server
                 $.ajax({
-                    url: '{{ route('books.store') }}', // the route to the send the request to
-                    method: 'POST', // method type (GET, POST...), here POST since we are creating a book and sending data to the server
+                    url: url,
+                    method: 'POST',
                     processData: false,
                     contentType: false,
-                    data: formData, // which data to send to the server, if you have multiple data you can use {}
+                    data: formData,
 
-                    // in case of success this function will execute
                     success: function(response) {
-                        $('.ajax-modal').modal('hide'); // hide the modal after success
-                        $('.ajax-modal').modal('hide');
-                        table.ajax.reload(); //refresh the data table
-                        if (response) {
-                            Swal.fire({ // use sweet alert success alert
-                                title: response
-                                    .success, // get the title from the backend response
-                                icon: "success",
-                                draggable: true
-                            });
-                        }
+                        $('.ajax-modal').modal('hide'); // Hide modal
+                        table.ajax.reload(); // Refresh DataTable
+                        Swal.fire({
+                            title: response.success, // Show success message
+                            icon: "success",
+                            draggable: true
+                        });
                     },
-                    // in case of error this function will execute
                     error: function(error) {
-                        if (error) {
+                        if (error.responseJSON && error.responseJSON.errors) {
                             $('#titleError').html(error.responseJSON.errors
-                                .title); // show the error message in the span under field input
-                            $('#genreError').html(error.responseJSON.errors.genre);
+                                .title); // Show title error
+                            $('#genreError').html(error.responseJSON.errors
+                                .genre); // Show genre error
+                        } else {
+                            console.error(error); // Log unexpected errors
                         }
                     }
                 });
@@ -214,9 +211,9 @@
                         //     selected: true
                         // }));
                         // $('#genre').append( '<option value="'+response.id+'">'+response.genre+'</option>' ).selectmenu('refresh');
-                        $('#genre').empty().append('<option value="' + response.id + '">' +
-                            capitalizeFirstLetter(response.genre) + '</option>');
-
+                        // $('#genre').empty().append('<option value="' + response.id + '">' +
+                        //     capitalizeFirstLetter(response.genre) + '</option>');
+                        $('#genre').val(response.genre);
                         // table.ajax.reload(); //refresh the data table
 
                     },

@@ -57,16 +57,19 @@ class BookController extends Controller
 
     public function update(Request $request, Book $book)
     {
-        $request->validate([ //data validation
+        $request->validate([
             'title' => 'required|string|min:1|max:255',
             'genre' => 'required|string|min:1|max:255',
         ]);
 
-        $book->update($request()->only(['title', 'genre']));
+        $book->update([
+            'title' => $request->title,
+            'genre' => $request->genre,
+        ]);
 
-        return response()->json([ // return a json response
+        return response()->json([
             'success' => "Book updated Successfully",
-        ], 201); // it is important to return a correct status code here
+        ], 200); // Return success response
     }
 
     public function edit(Book $book)
