@@ -99,6 +99,7 @@
     <script src="{{ asset('js/books/datatable.js') }}"></script>
     <script src="{{ asset('js/books/modal.js') }}"></script>
     <script src="{{ asset('js/books/delete.js') }}"></script>
+    <script src="{{ asset('js/books/edit.js') }}"></script>
     <script src="{{ asset('js/books/main.js') }}"></script>
 </body>
 
