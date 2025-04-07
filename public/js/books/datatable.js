@@ -14,6 +14,7 @@ function initDataTable() {
             { data: 'title', name: 'title' },
             { data: 'genre', name: 'genre' },
             { data: 'author', name: 'author' },
+            { data: 'description', name: 'description' },
             { data: 'action', name: 'action', orderable: false, searchable: false }
         ]
     });

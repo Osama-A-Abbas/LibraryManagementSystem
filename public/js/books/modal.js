@@ -58,6 +58,7 @@ function initModalHandlers(table) {
                     $('#titleError').html(error.responseJSON.errors.title);
                     $('#genreError').html(error.responseJSON.errors.genre);
                     $('#authorError').html(error.responseJSON.errors.author);
+                    $('#descriptionError').html(error.responseJSON.errors.description);
                 } else {
                     console.error(error);
                 }

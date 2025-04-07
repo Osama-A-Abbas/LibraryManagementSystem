@@ -32,9 +32,18 @@
                     <div class="form-group mb-3">
                         <label for="author">Author</label>
                         <input type="text" id="author" name="author" class="form-control"
-                            placeholder="e.g. Harry Potter" />
+                            placeholder="e.g. J.K. Rowling" />
                         <span id="authorError" class="text-danger error-messages"></span>
                     </div>
+
+                     <!-- Description, id = description-->
+                     <div class="form-group mb-3">
+                        <label for="description">Description</label>
+                        <input type="text" id="description" name="description" class="form-control"
+                            placeholder="Book description, summary, etc. e.g. A book about a boy who goes to a magic school" />
+                        <span id="descriptionError" class="text-danger error-messages"></span>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

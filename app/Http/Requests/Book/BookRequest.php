@@ -25,6 +25,7 @@ class BookRequest extends FormRequest
             'title' => 'required|string|max:255',
             'genre' => 'required|string|max:255',
             'author' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
         ];
     }
 }
