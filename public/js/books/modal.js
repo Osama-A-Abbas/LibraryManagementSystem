@@ -29,22 +29,17 @@ function initModalHandlers(table) {
         var bookId = $('#book_id').val(); // Check if book_id is set
 
         var url = bookId ? '/books/' + bookId + '/update' : '/books/store'; // Determine URL
-        var method = bookId ? 'PUT' : 'POST'; // Determine HTTP method
-
-        if (method === 'PUT') {
-            formData.append('_method', 'PUT'); // Add _method field for PUT requests
-        }
 
         $.ajax({
             url: url,
-            method: 'POST', // Always use POST, _method field will handle the actual method
+            method: 'POST',
             processData: false,
             contentType: false,
             data: formData,
 
             success: function(response) {
                 $('#saveBtn').attr('disabled', false);
-                $('#saveBtn').html('Save Book');
+                $('#saveBtn').html(bookId ? 'Update Book' : 'Save Book');
                 $('.ajax-modal').modal('hide'); // Hide modal
                 table.ajax.reload(); // Refresh DataTable
 
@@ -57,7 +52,7 @@ function initModalHandlers(table) {
 
             error: function(error) {
                 $('#saveBtn').attr('disabled', false);
-                $('#saveBtn').html('Save Book');
+                $('#saveBtn').html(bookId ? 'Update Book' : 'Save Book');
 
                 if (error.responseJSON && error.responseJSON.errors) {
                     $('#titleError').html(error.responseJSON.errors.title);
@@ -88,7 +83,11 @@ function initModalHandlers(table) {
             },
 
             error: function(error) {
-                console.error(error);
+                Swal.fire({
+                    title: "Error!",
+                    text: "Failed to load book data.",
+                    icon: "error"
+                });
             }
         });
     });

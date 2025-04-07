@@ -16,7 +16,16 @@ class BookController extends Controller
     public function index()
     {
         $books = Book::select(['id', 'title', 'genre']);
-        return datatables()->of($books)->make(true);
+        return datatables()->of($books)
+            ->editColumn('genre', function ($book) {
+                return ucfirst($book->genre); // Capitalize the first letter of the genre
+            })
+            ->addColumn('action', function($row) {
+                return '<a href="javascript:void(0)" class="btn btn-sm btn-info editButton" data-id="'.$row->id.'">Edit</a>
+                        <a href="javascript:void(0)" class="btn btn-sm btn-danger deleteButton" data-id="'.$row->id.'">Delete</a>';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 
     public function store(Request $request)
@@ -38,7 +47,11 @@ class BookController extends Controller
     public function edit($id)
     {
         $book = Book::findOrFail($id);
-        return response()->json($book);
+        return response()->json([
+            'id' => $book->id,
+            'title' => $book->title,
+            'genre' => $book->genre
+        ]);
     }
 
     public function update(Request $request, $id)

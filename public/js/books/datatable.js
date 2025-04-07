@@ -13,18 +13,7 @@ function initDataTable() {
             { data: 'id', name: 'id' },
             { data: 'title', name: 'title' },
             { data: 'genre', name: 'genre' },
-            {
-                data: 'id',
-                name: 'action',
-                orderable: false,
-                searchable: false,
-                render: function(data) {
-                    return `
-                        <a href="javascript:void(0)" class="btn btn-sm btn-info editButton" data-id="${data}">Edit</a>
-                        <a href="javascript:void(0)" class="btn btn-sm btn-danger deleteButton" data-id="${data}">Delete</a>
-                    `;
-                }
-            }
+            { data: 'action', name: 'action', orderable: false, searchable: false }
         ]
     });
 }
