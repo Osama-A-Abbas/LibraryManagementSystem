@@ -7,13 +7,17 @@
                     <h5 class="modal-title" id="modalTitle"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body"> <!--HERE YOU CAN ADD NEW FIELDS     -->
                     <input type="hidden" name="book_id" id="book_id">
+                    <!-- TITLE, id = title-->
                     <div class="form-group mb-3">
                         <label for="title">Book Title</label>
-                        <input type="text" id="title" name="title" class="form-control" placeholder="e.g. Harry Potter" />
+                        <input type="text" id="title" name="title" class="form-control"
+                            placeholder="e.g. Harry Potter" />
                         <span id="titleError" class="text-danger error-messages"></span>
                     </div>
+
+                    <!--GENRE, id = genre-->
                     <div class="form-group mb-3">
                         <label for="genre">Genre</label>
                         <select id="genre" name="genre" class="form-control">
@@ -22,6 +26,14 @@
                             <option value="nonfiction">Nonfiction</option>
                         </select>
                         <span id="genreError" class="text-danger error-messages"></span>
+                    </div>
+
+                    <!-- AUTHOR, id = author-->
+                    <div class="form-group mb-3">
+                        <label for="author">Author</label>
+                        <input type="text" id="author" name="author" class="form-control"
+                            placeholder="e.g. Harry Potter" />
+                        <span id="authorError" class="text-danger error-messages"></span>
                     </div>
                 </div>
                 <div class="modal-footer">

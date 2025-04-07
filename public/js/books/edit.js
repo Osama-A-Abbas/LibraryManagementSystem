@@ -21,6 +21,7 @@ function initEditHandlers(table) {
                 $('#title').val(response.title);
                 $('#book_id').val(response.id);
                 $('#genre').val(response.genre);
+                $('#author').val(response.author);
             },
 
             error: function(error) {

@@ -20,7 +20,7 @@ class BookController extends Controller
 
     public function index()
     {
-        $books = $this->book->select(['id', 'title', 'genre']);
+        $books = $this->book->select(['id', 'title', 'genre', 'author']);
         return datatables()->of($books)
             ->editColumn('genre', function ($book) {
                 return ucfirst($book->genre); // Capitalize the first letter of the genre
@@ -38,6 +38,7 @@ class BookController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'genre' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -54,7 +55,8 @@ class BookController extends Controller
         return response()->json([
             'id' => $book->id,
             'title' => $book->title,
-            'genre' => $book->genre
+            'genre' => $book->genre,
+            'author' => $book->author
         ]);
     }
 
@@ -63,6 +65,7 @@ class BookController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'genre' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
         ]);
 
         if ($validator->fails()) {

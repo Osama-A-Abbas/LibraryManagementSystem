@@ -8,6 +8,7 @@
                     <th scope="col">#</th>
                     <th scope="col">Title</th>
                     <th scope="col">Genre</th>
+                    <th scope="col">Author</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>

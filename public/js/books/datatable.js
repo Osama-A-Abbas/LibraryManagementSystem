@@ -13,6 +13,7 @@ function initDataTable() {
             { data: 'id', name: 'id' },
             { data: 'title', name: 'title' },
             { data: 'genre', name: 'genre' },
+            { data: 'author', name: 'author' },
             { data: 'action', name: 'action', orderable: false, searchable: false }
         ]
     });
