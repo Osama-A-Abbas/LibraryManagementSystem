@@ -54,6 +54,21 @@ class BookController extends Controller
         ], 201); // it is important to return a correct status code here
     }
 
+
+    public function update(Request $request, Book $book)
+    {
+        $request->validate([ //data validation
+            'title' => 'required|string|min:1|max:255',
+            'genre' => 'required|string|min:1|max:255',
+        ]);
+
+        $book->update($request());
+
+        return response()->json([ // return a json response
+            'success' => "Book updated Successfully",
+        ], 201); // it is important to return a correct status code here
+    }
+
     public function edit(Book $book)
     {
         if(! $book){

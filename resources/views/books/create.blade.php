@@ -102,7 +102,7 @@
                 }
             });
 
-            $('#booksTable').DataTable({
+            var table = $('#booksTable').DataTable({
                 processing: true,
                 serverSide: true,
 
@@ -148,6 +148,41 @@
                     bookForm
                 ); // define *name* not *id* because we are getting it from form data || bookForm is passed as a param
 
+                // console.log($('#saveBtn').text());
+                if ($('#saveBtn').html() == 'Update Book') {
+                    var id = $(this).data('id'); //book id
+
+                    $.ajax({
+                        url: '{{ url('books') }}/' + id + '/update',
+                        type: 'put',
+                        processData: false,
+                        contentType: false,
+                        data: formData,
+                        success: function(response) {
+                            $('.ajax-modal').modal('hide');
+                            table.ajax.reload();
+                            if (response) {
+                                Swal.fire({
+                                    title: response
+                                        .success,
+                                    icon: "success",
+                                    draggable: true
+                                });
+                            }
+                        },
+                        error: function(error) {
+                            if (error) {
+                                // $('#titleError').html(error.responseJSON.errors
+                                //     .title
+                                // );
+                                // $('#genreError').html(error.responseJSON.errors
+                                //     .genre);
+                            }
+                        }
+
+                    });
+                }
+
                 //ajax request for sending the book data to the server
                 $.ajax({
                     url: '{{ route('books.store') }}', // the route to the send the request to
@@ -159,6 +194,7 @@
                     // in case of success this function will execute
                     success: function(response) {
                         $('.ajax-modal').modal('hide'); // hide the modal after success
+                        table.ajax.reload(); //refresh the data table
                         if (response) {
                             Swal.fire({ // use sweet alert success alert
                                 title: response
@@ -172,7 +208,8 @@
                     error: function(error) {
                         if (error) {
                             $('#titleError').html(error.responseJSON.errors
-                                .title); // show the error message in the span under field input
+                                .title
+                            ); // show the error message in the span under field input
                             $('#genreError').html(error.responseJSON.errors.genre);
                         }
                     }
@@ -190,24 +227,38 @@
 
                     success: function(response) {
                         $('.ajax-modal').modal('show'); // show the modal
-                        $('#modalTitle').html('Edit Book'); // set modalTitle to Edit Book
-                        $('#saveBtn').html('Update Book'); // set saveBtn to Update Book
+                        $('#modalTitle').html(
+                            'Edit Book'); // set modalTitle to Edit Book
+                        $('#saveBtn').html(
+                            'Update Book'); // set saveBtn to Update Book
 
                         //when pressing edit, set the title field value to the response.title
                         $('#title').val(response.title);
                         //pre-select the genre from the response
-                        $('#genre').append($('<option>', {
-                            value: response.id,
-                            text: response.genre,
-                            selected: true
-                        }));
-                    },
+                        // $('#genre').append($('<option>', {
+                        //     value: response.id,
+                        //     text: response.genre,
+                        //     selected: true
+                        // }));
+                        // $('#genre').append( '<option value="'+response.id+'">'+response.genre+'</option>' ).selectmenu('refresh');
+                        $('#genre').empty().append('<option value="' + response.id +
+                            '">' +
+                            capitalizeFirstLetter(response.genre) + '</option>');
 
+                        table.ajax.reload(); //refresh the data table
+
+                    },
                     error: function(error) {
                         console.log(error)
                     }
 
+
+
                 });
+
+                function capitalizeFirstLetter(string) {
+                    return string.charAt(0).toUpperCase() + string.slice(1);
+                }
             });
         });
     </script>
