@@ -18,6 +18,27 @@ function initModalHandlers(table) {
     $('#modalTitle').html('Add Book');
     $('#saveBtn').html('Save Book');
 
+    // Handle file upload preview
+    $('#cover_page').on('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#cover_preview').html(`<img src="${e.target.result}" class="img-thumbnail" style="max-height: 200px;">`);
+            }
+            reader.readAsDataURL(file);
+        } else {
+            $('#cover_preview').empty();
+        }
+    });
+
+    // Reset form and preview when modal is closed
+    $('#exampleModal').on('hidden.bs.modal', function() {
+        $('#bookForm')[0].reset();
+        $('#cover_preview').empty();
+        $('.error-messages').empty();
+    });
+
     // Save button click handler
     $('#saveBtn').click(function() {
         $('#saveBtn').attr('disabled', true);
@@ -54,15 +75,20 @@ function initModalHandlers(table) {
                 $('#saveBtn').attr('disabled', false);
                 $('#saveBtn').html(bookId ? 'Update Book' : 'Save Book');
 
-                if (error.responseJSON && error.responseJSON.errors) {
-                    $('#titleError').html(error.responseJSON.errors.title);
-                    $('#genreError').html(error.responseJSON.errors.genre);
-                    $('#authorError').html(error.responseJSON.errors.author);
-                    $('#descriptionError').html(error.responseJSON.errors.description);
-                    $('#publishedAtError').html(error.responseJSON.errors.published_at);
-                    $('#coverPageError').html(error.responseJSON.errors.cover_page);
+                if (error.status === 422) {
+                    const errors = error.responseJSON.errors;
+                    $('#titleError').html(errors.title ? errors.title[0] : '');
+                    $('#genreError').html(errors.genre ? errors.genre[0] : '');
+                    $('#authorError').html(errors.author ? errors.author[0] : '');
+                    $('#descriptionError').html(errors.description ? errors.description[0] : '');
+                    $('#published_atError').html(errors.published_at ? errors.published_at[0] : '');
+                    $('#cover_pageError').html(errors.cover_page ? errors.cover_page[0] : '');
                 } else {
-                    console.error(error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Something went wrong. Please try again.'
+                    });
                 }
             }
         });

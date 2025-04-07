@@ -6,32 +6,38 @@
 
 function initEditHandlers(table) {
     // Edit button click handler
-    $('body').on('click', '.editButton', function() {
-        var id = $(this).data('id');
+    $(document).on('click', '.editButton', function() {
+        const bookId = $(this).data('id');
 
         $.ajax({
-            url: '/books/' + id + '/edit',
+            url: `/books/${bookId}/edit`,
             type: 'GET',
-
             success: function(response) {
-                $('.ajax-modal').modal('show');
-                $('#modalTitle').html('Edit Book');
-                $('#saveBtn').html('Update Book');
-
-                $('#title').val(response.title);
                 $('#book_id').val(response.id);
+                $('#title').val(response.title);
                 $('#genre').val(response.genre);
                 $('#author').val(response.author);
                 $('#description').val(response.description);
                 $('#published_at').val(response.published_at);
                 $('#cover_page').val(response.cover_page);
-            },
 
+
+                // Display existing cover image if available
+                if (response.cover_page) {
+                    $('#cover_preview').html(`<img src="${response.cover_page}" class="img-thumbnail" style="max-height: 200px;">`);
+                } else {
+                    $('#cover_preview').empty();
+                }
+
+                $('#modalTitle').html('Edit Book');
+                $('#saveBtn').html('Update Book');
+                $('#exampleModal').modal('show');
+            },
             error: function(error) {
                 Swal.fire({
-                    title: "Error!",
-                    text: "Failed to load book data.",
-                    icon: "error"
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Failed to load book details. Please try again.'
                 });
             }
         });

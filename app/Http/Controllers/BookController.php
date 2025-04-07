@@ -26,11 +26,17 @@ class BookController extends Controller
             ->editColumn('genre', function ($book) {
                 return ucfirst($book->genre); // Capitalize the first letter of the genre
             })
+            ->editColumn('cover_page', function ($book) {
+                if ($book->cover_page) {
+                    return '<img src="' . asset('storage/' . $book->cover_page) . '" alt="Book Cover" class="img-thumbnail" style="max-height: 50px;">';
+                }
+                return 'No Cover';
+            })
             ->addColumn('action', function ($row) {
                 return '<a href="javascript:void(0)" class="btn btn-sm btn-info editButton" data-id="' . $row->id . '">Edit</a>
                         <a href="javascript:void(0)" class="btn btn-sm btn-danger deleteButton" data-id="' . $row->id . '">Delete</a>';
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['action', 'cover_page'])
             ->make(true);
     }
 

@@ -1,6 +1,6 @@
 <!-- Book Modal Component -->
 <div class="modal fade ajax-modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <form id="bookForm">
+    <form id="bookForm" enctype="multipart/form-data">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -36,29 +36,28 @@
                         <span id="authorError" class="text-danger error-messages"></span>
                     </div>
 
-                     <!-- Description, id = description-->
-                     <div class="form-group mb-3">
+                    <!-- DESCRIPTION, id = description-->
+                    <div class="form-group mb-3">
                         <label for="description">Description</label>
-                        <input type="text" id="description" name="description" class="form-control"
-                            placeholder="Book description, summary, etc. e.g. A book about a boy who goes to a magic school" />
+                        <textarea id="description" name="description" class="form-control" rows="3"
+                            placeholder="Book description..."></textarea>
                         <span id="descriptionError" class="text-danger error-messages"></span>
                     </div>
 
-                    <!-- Published at, id = published_at-->
+                    <!-- PUBLISHED AT, id = published_at-->
                     <div class="form-group mb-3">
-                        <label for="published_at">Published At</label>
+                        <label for="published_at">Published Date</label>
                         <input type="date" id="published_at" name="published_at" class="form-control" />
-                        <span id="publishedAtError" class="text-danger error-messages"></span>
+                        <span id="published_atError" class="text-danger error-messages"></span>
                     </div>
 
-                    <!-- Cover page, id = cover_page-->
+                    <!-- COVER PAGE, id = cover_page-->
                     <div class="form-group mb-3">
-                        <label for="cover_page">Cover Page</label>
-                        <input type="file" id="cover_page" name="cover_page" class="form-control" />
-                        <span id="coverPageError" class="text-danger error-messages"></span>
+                        <label for="cover_page">Cover Image</label>
+                        <input type="file" id="cover_page" name="cover_page" class="form-control" accept="image/*" />
+                        <span id="cover_pageError" class="text-danger error-messages"></span>
+                        <div id="cover_preview" class="mt-2"></div>
                     </div>
-
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
