@@ -153,6 +153,9 @@
                     bookForm
                 ); // define *name* not *id* because we are getting it from form data || bookForm is passed as a param
 
+                if ($('#book_id').val()){
+                    console.log($('#book_id').val());
+                }
 
                 //ajax request for sending the book data to the server
                 $.ajax({
@@ -214,7 +217,7 @@
                         $('#genre').empty().append('<option value="' + response.id + '">' +
                             capitalizeFirstLetter(response.genre) + '</option>');
 
-                        table.ajax.reload(); //refresh the data table
+                        // table.ajax.reload(); //refresh the data table
 
                     },
                     error: function(error) {
