@@ -1,6 +1,6 @@
 <!-- Book Table Component -->
 <div class="row">
-    <div class="col-md-6 offset-3" style="margin-top: 100px">
+    <div class="col-md-10 offset-1" style="margin-top: 100px">
         <a class="btn btn-info mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Book</a>
         <table id="booksTable" class="table">
             <thead>
