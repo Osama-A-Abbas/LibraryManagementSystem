@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Book\BookRequest;
+use App\Http\Requests\Book\StoreBookRequest;
+use App\Http\Requests\Book\UpdateBookRequest;
 use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
@@ -40,7 +42,7 @@ class BookController extends Controller
             ->make(true);
     }
 
-    public function store(BookRequest $request)
+    public function store(StoreBookRequest $request)
     {
         // $this->book->create($request->only(['id', 'title', 'genre', 'author', 'description', 'published_at',]));
         $book = new Book();
@@ -76,16 +78,39 @@ class BookController extends Controller
             'author' => $book->author,
             'description' => $book->description,
             'published_at' => $book->published_at,
-            'cover_page' => $book->cover_page
+            // 'cover_page' => $book->cover_page // this was causing the edit modal not showing issue
         ]);
     }
 
-    public function update(BookRequest $request, Book $book)
-    {
-        $book->update($request->all());
+    public function update(UpdateBookRequest $request, Book $book)
+{
+    // Update non-file fields
+    $book->update($request->only(['title', 'genre', 'author', 'description', 'published_at']));
 
-        return response()->json(['success' => 'Book updated successfully.']);
+    // Check if a new file is uploaded
+    if ($request->hasFile('cover_page')) {
+        // Delete the old file if it exists
+        if ($book->cover_page && Storage::disk('public')->exists($book->cover_page)) {
+            Storage::disk('public')->delete($book->cover_page);
+        }
+
+        // Get the original file extension
+        $extension = $request->file('cover_page')->getClientOriginalExtension();
+        // Create a unique filename with timestamp
+        $fileName = uniqid() . '_' . time() . '.' . $extension;
+        // Store the file in the public/books/covers directory
+        $path = $request->file('cover_page')->storeAs(
+            'books/covers',
+            $fileName,
+            'public'
+        );
+
+        // Update the cover_page field in the database
+        $book->update(['cover_page' => $path]);
     }
+
+    return response()->json(['success' => 'Book updated successfully.']);
+}
 
     public function destroy(Book $book)
     {
