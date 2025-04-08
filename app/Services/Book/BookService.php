@@ -12,6 +12,13 @@ class BookService
         protected Book $book,
     ) {}
 
+
+    // ------------  BookController index method -----------------------------\\
+    /**
+     * Set up the DataTable for the books list.
+     *
+     * @return \Yajra\DataTables\DataTableAbstract
+     */
     public function setBookDataTable(): \Yajra\DataTables\DataTableAbstract
     {
         $books = $this->book->select(['id', 'title', 'genre', 'author', 'description', 'published_at', 'cover_page']);
@@ -36,6 +43,15 @@ class BookService
             ->rawColumns(['action', 'cover_page']);
     }
 
+    //---------------------------------------------------------------------------------------------\\
+    // ------------  BookController Store + Update methods and helpers -----------------------------\\
+
+    /**
+     * Store a new book into the database.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \App\Models\Book
+     */
     public function storeBook($request)
     {
         try {
@@ -63,6 +79,24 @@ class BookService
         }
     }
 
+/**
+ * Update an existing book in the database.
+ *
+ * This method handles the update of a book's details including
+ * title, genre, author, description, and published date. It also
+ * manages the upload and replacement of the cover image and PDF file
+ * associated with the book, ensuring any existing files are deleted
+ * before new ones are uploaded.
+ *
+ * @param \Illuminate\Http\Request $request The request object containing
+ *                                          the book details and files.
+ * @param \App\Models\Book $book The book model instance to be updated.
+ *
+ * @return \App\Models\Book The updated book model instance.
+ *
+ * @throws \Exception If the update process encounters an error and needs
+ *                    to roll back the transaction.
+ */
 
     public function updateBook($request, $book)
 {
@@ -91,17 +125,64 @@ class BookService
     }
 }
 
-
+    /**
+     * Handle the upload of a file to the storage.
+     *
+     * @param \Illuminate\Http\UploadedFile $file The uploaded file.
+     * @param string $directory The directory in which the file should be stored.
+     *
+     * @return string The path to the uploaded file.
+     */
     private function handleFileUpload($file, string $directory): string
     {
         $fileName = uniqid() . '_' . time() . '.' . $file->getClientOriginalExtension();
         return $file->storeAs($directory, $fileName, 'public');
     }
 
+
+    /**
+     * Deletes a file from the storage if it exists.
+     *
+     * @param string|null $path The path to the file to delete.
+     */
     private function deleteFileIfExists(?string $path): void
     {
         if ($path && Storage::disk('public')->exists($path)) {
             Storage::disk('public')->delete($path);
         }
     }
+
+    //---------------------------------------------------------------------------------------------\\
+ 
+    /**
+     * Delete a book and its associated files.
+     *
+     * @param \App\Models\Book $book
+     * @return void
+     * @throws \Exception
+     */
+    public function deleteBook($book)
+    {
+        try {
+            DB::beginTransaction();
+
+            // Delete associated files
+            if ($book->cover_page) {
+                $this->deleteFileIfExists($book->cover_page);
+            }
+
+            if ($book->book_pdf) {
+                $this->deleteFileIfExists($book->book_pdf);
+            }
+
+            // Delete the book record
+            $book->delete();
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
 }

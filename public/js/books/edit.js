@@ -29,7 +29,13 @@ function initEditHandlers(table) {
 
                 // Display existing book PDF if available
                 if (response.book_pdf) {
-                    $('#book_pdf_preview').html(`<img src="${response.book_pdf}" class="img-thumbnail" style="max-height: 200px;">`);
+                    $('#book_pdf_preview').html(`
+                        <div class="mt-2">
+                            <a href="/books/${response.id}/download" class="btn btn-sm btn-primary">
+                                <i class="fas fa-file-pdf"></i> Download PDF
+                            </a>
+                        </div>
+                    `);
                 } else {
                     $('#book_pdf_preview').empty();
                 }
@@ -46,5 +52,11 @@ function initEditHandlers(table) {
                 });
             }
         });
+    });
+
+    // Download button click handler
+    $(document).on('click', '.downloadButton', function() {
+        const bookId = $(this).data('id');
+        window.location.href = `/books/${bookId}/download`;
     });
 }
