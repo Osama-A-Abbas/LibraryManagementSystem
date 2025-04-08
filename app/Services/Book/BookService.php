@@ -88,4 +88,55 @@ class BookService
             throw $e;
         }
     }
+
+    /**
+     * Update an existing book with optional cover image.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Book $book
+     * @return \App\Models\Book
+     * @throws \Exception
+     */
+    public function update($request, $book)
+    {
+        $path = null;
+
+        try {
+            DB::beginTransaction();
+
+            // Update non-file fields
+            $book->update($request->only(['title', 'genre', 'author', 'description', 'published_at']));
+
+            // Check if a new file is uploaded
+            if ($request->hasFile('cover_page')) {
+                // Delete the old file if it exists
+                if ($book->cover_page && Storage::disk('public')->exists($book->cover_page)) {
+                    Storage::disk('public')->delete($book->cover_page);
+                }
+
+                // Get the original file extension
+                $extension = $request->file('cover_page')->getClientOriginalExtension();
+                // Create a unique filename with timestamp
+                $fileName = uniqid() . '_' . time() . '.' . $extension;
+                // Store the file in the public/books/covers directory
+                $path = $request->file('cover_page')->storeAs(
+                    'books/covers',
+                    $fileName,
+                    'public'
+                );
+
+                // Update the cover_page field in the database
+                $book->update(['cover_page' => $path]);
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // If there was a file upload, try to delete it
+            if ($path && Storage::disk('public')->exists($path)) {
+                Storage::disk('public')->delete($path);
+            }
+            throw $e;
+        }
+    }
 }

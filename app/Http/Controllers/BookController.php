@@ -52,34 +52,14 @@ class BookController extends Controller
     }
 
     public function update(UpdateBookRequest $request, Book $book)
-{
-    // Update non-file fields
-    $book->update($request->only(['title', 'genre', 'author', 'description', 'published_at']));
-
-    // Check if a new file is uploaded
-    if ($request->hasFile('cover_page')) {
-        // Delete the old file if it exists
-        if ($book->cover_page && Storage::disk('public')->exists($book->cover_page)) {
-            Storage::disk('public')->delete($book->cover_page);
+    {
+        try {
+            $this->bookService->update($request, $book);
+            return response()->json(['success' => 'Book updated successfully.']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to update book: ' . $e->getMessage()], 500);
         }
-
-        // Get the original file extension
-        $extension = $request->file('cover_page')->getClientOriginalExtension();
-        // Create a unique filename with timestamp
-        $fileName = uniqid() . '_' . time() . '.' . $extension;
-        // Store the file in the public/books/covers directory
-        $path = $request->file('cover_page')->storeAs(
-            'books/covers',
-            $fileName,
-            'public'
-        );
-
-        // Update the cover_page field in the database
-        $book->update(['cover_page' => $path]);
     }
-
-    return response()->json(['success' => 'Book updated successfully.']);
-}
 
     public function destroy(Book $book)
     {
