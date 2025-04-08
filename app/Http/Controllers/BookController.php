@@ -68,29 +68,4 @@ class BookController extends Controller
         return response()->json(['success' => 'Book deleted successfully.']);
     }
 
-    /**
-     * Download the book PDF.
-     *
-     * @param \App\Models\Book $book
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse|\Illuminate\Http\JsonResponse
-     */
-    public function downloadPdf(Book $book)
-    {
-        try {
-            if (!$book->book_pdf) {
-                return response()->json(['error' => 'No PDF available for this book.'], 404);
-            }
-
-            $filePath = storage_path('app/public/' . $book->book_pdf);
-
-            if (!file_exists($filePath)) {
-                return response()->json(['error' => 'PDF file not found.'], 404);
-            }
-
-            return response()->download($filePath, basename($book->book_pdf));
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to download PDF: ' . $e->getMessage()], 500);
-        }
-    }
-
 }
