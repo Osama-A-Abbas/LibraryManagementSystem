@@ -11,6 +11,7 @@ class Book extends Model
         'genre',
         'author',
         'cover_page',
+        // 'book_pdf_file',
         'description',
         'published_at',
         'number_of_copies',
@@ -27,7 +28,7 @@ class Book extends Model
         return $value ? \Carbon\Carbon::parse($value)->format('Y-m-d') : null;
     }
 
-    
+
     // public function getGenreAttribute($value)
     // {
     //     return $value ? ucfirst($value) : null;

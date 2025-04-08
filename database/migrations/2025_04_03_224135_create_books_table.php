@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('genre');
             $table->string('author')->nullable();
             $table->string('cover_page')->nullable(); // URL or path to the cover image
+            // $table->string('book_pdf_file')->nullable();
             $table->text('description')->nullable();
             $table->timestamp('published_at')->nullable(); // Date when the book was published
             $table->integer('number_of_copies')->default(0); // Number of copies available in stock
