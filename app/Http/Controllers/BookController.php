@@ -6,9 +6,8 @@ use App\Http\Requests\Book\StoreBookRequest;
 use App\Http\Requests\Book\UpdateBookRequest;
 use App\Models\Book;
 use App\Services\Book\BookService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class BookController extends Controller
 {
@@ -31,29 +30,12 @@ class BookController extends Controller
 
     public function store(StoreBookRequest $request)
     {
-        // $this->book->create($request->only(['id', 'title', 'genre', 'author', 'description', 'published_at',]));
-        $book = new Book();
-        $book->title = $request->title;
-        $book->genre = $request->genre;
-        $book->author = $request->author;
-        $book->description = $request->description;
-        $book->published_at = $request->published_at;
-
-        // Get the original file extension
-        $extension = $request->file('cover_page')->getClientOriginalExtension();
-        // Create a unique filename with timestamp
-        $fileName = uniqid() . '_' . time() . '.' . $extension;
-        // Store the file in the public/books/covers directory
-        $path = $request->file('cover_page')->storeAs(
-            'books/covers',
-            $fileName,
-            'public'
-        );
-        // Save the path to the database
-        $book->cover_page = $path;
-        $book->save();
-
-        return response()->json(['success' => 'Book created successfully.']);
+        try {
+            $this->bookService->store($request);
+            return response()->json(['success' => 'Book created successfully.']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to create book: ' . $e->getMessage()], 500);
+        }
     }
 
     public function edit(Book $book)
