@@ -46,7 +46,7 @@ class BookService
      * @return \App\Models\Book
      * @throws \Exception
      */
-    public function store($request)
+    public function storeBook($request)
     {
         $path = null;
 
@@ -97,7 +97,7 @@ class BookService
      * @return \App\Models\Book
      * @throws \Exception
      */
-    public function update($request, $book)
+    public function updateBook($request, $book)
     {
         $path = null;
 

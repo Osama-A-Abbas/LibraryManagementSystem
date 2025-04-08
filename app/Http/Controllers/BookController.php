@@ -31,7 +31,7 @@ class BookController extends Controller
     public function store(StoreBookRequest $request)
     {
         try {
-            $this->bookService->store($request);
+            $this->bookService->storeBook($request);
             return response()->json(['success' => 'Book created successfully.']);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to create book: ' . $e->getMessage()], 500);
@@ -54,7 +54,7 @@ class BookController extends Controller
     public function update(UpdateBookRequest $request, Book $book)
     {
         try {
-            $this->bookService->update($request, $book);
+            $this->bookService->updateBook($request, $book);
             return response()->json(['success' => 'Book updated successfully.']);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to update book: ' . $e->getMessage()], 500);
@@ -63,8 +63,12 @@ class BookController extends Controller
 
     public function destroy(Book $book)
     {
-        $book->delete();
-
-        return response()->json(['success' => 'Book deleted successfully.']);
+        try {
+            $book->delete();
+            return response()->json(['success' => 'Book deleted successfully.']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to delete book: ' . $e->getMessage()], 500);
+        }
     }
+
 }
