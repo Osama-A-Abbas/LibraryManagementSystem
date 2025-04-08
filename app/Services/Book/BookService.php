@@ -25,7 +25,13 @@ class BookService
             })
             ->addColumn('action', function ($row) {
                 return '<a href="javascript:void(0)" class="btn btn-sm btn-info editButton" data-id="' . $row->id . '">Edit</a>
-                        <a href="javascript:void(0)" class="btn btn-sm btn-danger deleteButton" data-id="' . $row->id . '">Delete</a>';
+                        <a href="javascript:void(0)" class="btn btn-sm btn-danger deleteButton" data-id="' . $row->id . '">Delete</a>
+                        <a href="javascript:void(0)" class="btn btn-sm btn-primary viewButton" data-id="' . $row->id . '">View</a>
+                        <a href="javascript:void(0)" class="btn btn-sm btn-success downloadButton" data-id="' . $row->id . '">Download</a>
+                        <a href="javascript:void(0)" class="btn btn-sm btn-warning borrowButton" data-id="' . $row->id . '">Borrow</a>
+                        <a href="javascript:void(0)" class="btn btn-sm btn-secondary returnButton" data-id="' . $row->id . '">Return</a>
+                        ';
+
             })
             ->rawColumns(['action', 'cover_page']);
     }
