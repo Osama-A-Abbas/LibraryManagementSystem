@@ -11,7 +11,7 @@ class Book extends Model
         'genre',
         'author',
         'cover_page',
-        // 'book_pdf_file',
+        'book_pdf',
         'description',
         'published_at',
         'number_of_copies',

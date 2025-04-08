@@ -83,6 +83,7 @@ function initModalHandlers(table) {
                     $('#descriptionError').html(errors.description ? errors.description[0] : '');
                     $('#published_atError').html(errors.published_at ? errors.published_at[0] : '');
                     $('#cover_pageError').html(errors.cover_page ? errors.cover_page[0] : '');
+                    $('#book_pdfError').html(errors.book_pdf ? errors.book_pdf[0] : '');
                 } else {
                     Swal.fire({
                         icon: 'error',

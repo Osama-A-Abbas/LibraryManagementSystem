@@ -12,131 +12,90 @@ class BookService
         protected Book $book,
     ) {}
 
-    /**
-     * Prepare the books listing for the DataTables.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function setBookDataTable(): \Yajra\DataTables\DataTableAbstract // used in BookController *index* method
+    public function setBookDataTable(): \Yajra\DataTables\DataTableAbstract
     {
         $books = $this->book->select(['id', 'title', 'genre', 'author', 'description', 'published_at', 'cover_page']);
-        $dataTable = datatables()->of($books)
-            ->editColumn('genre', function ($book) {
-                return ucfirst($book->genre); // Capitalize the first letter of the genre
-            })
+
+        return datatables()->of($books)
+            ->editColumn('genre', fn($book) => ucfirst($book->genre))
             ->editColumn('cover_page', function ($book) {
-                if ($book->cover_page) {
-                    return '<img src="' . asset('storage/' . $book->cover_page) . '" alt="Book Cover" class="img-thumbnail" style="max-height: 50px;">';
-                }
-                return 'No Cover';
+                return $book->cover_page
+                    ? '<img src="' . asset('storage/' . $book->cover_page) . '" alt="Book Cover" class="img-thumbnail" style="max-height: 50px;">'
+                    : 'No Cover';
             })
             ->addColumn('action', function ($row) {
                 return '<a href="javascript:void(0)" class="btn btn-sm btn-info editButton" data-id="' . $row->id . '">Edit</a>
                         <a href="javascript:void(0)" class="btn btn-sm btn-danger deleteButton" data-id="' . $row->id . '">Delete</a>';
             })
             ->rawColumns(['action', 'cover_page']);
-
-        return $dataTable;
     }
 
-    /**
-     * Store a new book with cover image.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \App\Models\Book
-     * @throws \Exception
-     */
     public function storeBook($request)
     {
-        $path = null;
-
         try {
             DB::beginTransaction();
 
-            $book = new Book();
-            $book->title = $request->title;
-            $book->genre = $request->genre;
-            $book->author = $request->author;
-            $book->description = $request->description;
-            $book->published_at = $request->published_at;
+            $book = new Book($request->only(['title', 'genre', 'author', 'description', 'published_at']));
+            $book->save(); // Save first to get ID
 
-            // Handle file upload if present
+            // Upload files using book ID
             if ($request->hasFile('cover_page')) {
-                // Get the original file extension
-                $extension = $request->file('cover_page')->getClientOriginalExtension();
-                // Create a unique filename with timestamp
-                $fileName = uniqid() . '_' . time() . '.' . $extension;
-                // Store the file in the public/books/covers directory
-                $path = $request->file('cover_page')->storeAs(
-                    'books/covers',
-                    $fileName,
-                    'public'
-                );
-                // Save the path to the database
-                $book->cover_page = $path;
+                $book->cover_page = $this->handleFileUpload($request->file('cover_page'), "books/{$book->id}/cover");
             }
 
-            $book->save();
+            if ($request->hasFile('book_pdf')) {
+                $book->book_pdf = $this->handleFileUpload($request->file('book_pdf'), "books/{$book->id}/pdf");
+            }
+
+            $book->save(); // Save again to persist file paths
 
             DB::commit();
+            return $book;
         } catch (\Exception $e) {
             DB::rollBack();
-            // If there was a file upload, try to delete it
-            if ($path && Storage::disk('public')->exists($path)) {
-                Storage::disk('public')->delete($path);
-            }
             throw $e;
         }
     }
 
-    /**
-     * Update an existing book with optional cover image.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Book $book
-     * @return \App\Models\Book
-     * @throws \Exception
-     */
+
     public function updateBook($request, $book)
+{
+    try {
+        DB::beginTransaction();
+
+        $book->update($request->only(['title', 'genre', 'author', 'description', 'published_at']));
+
+        if ($request->hasFile('cover_page')) {
+            $this->deleteFileIfExists($book->cover_page);
+            $book->cover_page = $this->handleFileUpload($request->file('cover_page'), "books/{$book->id}/cover");
+        }
+
+        if ($request->hasFile('book_pdf')) {
+            $this->deleteFileIfExists($book->book_pdf);
+            $book->book_pdf = $this->handleFileUpload($request->file('book_pdf'), "books/{$book->id}/pdf");
+        }
+
+        $book->save();
+
+        DB::commit();
+        return $book;
+    } catch (\Exception $e) {
+        DB::rollBack();
+        throw $e;
+    }
+}
+
+
+    private function handleFileUpload($file, string $directory): string
     {
-        $path = null;
+        $fileName = uniqid() . '_' . time() . '.' . $file->getClientOriginalExtension();
+        return $file->storeAs($directory, $fileName, 'public');
+    }
 
-        try {
-            DB::beginTransaction();
-
-            // Update non-file fields
-            $book->update($request->only(['title', 'genre', 'author', 'description', 'published_at']));
-
-            // Check if a new file is uploaded
-            if ($request->hasFile('cover_page')) {
-                // Delete the old file if it exists
-                if ($book->cover_page && Storage::disk('public')->exists($book->cover_page)) {
-                    Storage::disk('public')->delete($book->cover_page);
-                }
-
-                // Get the original file extension
-                $extension = $request->file('cover_page')->getClientOriginalExtension();
-                // Create a unique filename with timestamp
-                $fileName = uniqid() . '_' . time() . '.' . $extension;
-                // Store the file in the public/books/covers directory
-                $path = $request->file('cover_page')->storeAs(
-                    'books/covers',
-                    $fileName,
-                    'public'
-                );
-
-                // Update the cover_page field in the database
-                $book->update(['cover_page' => $path]);
-            }
-
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            // If there was a file upload, try to delete it
-            if ($path && Storage::disk('public')->exists($path)) {
-                Storage::disk('public')->delete($path);
-            }
-            throw $e;
+    private function deleteFileIfExists(?string $path): void
+    {
+        if ($path && Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
         }
     }
 }

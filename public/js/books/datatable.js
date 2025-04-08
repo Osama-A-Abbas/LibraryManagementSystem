@@ -11,7 +11,7 @@ function initDataTable() {
         ajax: '/books/index',
         columns: [
             { data: 'id', name: 'id' },
-            { data: 'cover_page', name: 'cover_page' },
+            { data: 'cover_page', name: 'cover_page', orderable: false, searchable: false },
             { data: 'title', name: 'title' },
             { data: 'genre', name: 'genre' },
             { data: 'author', name: 'author' },
