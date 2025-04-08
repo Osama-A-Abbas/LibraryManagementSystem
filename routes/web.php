@@ -17,6 +17,7 @@ Route::post('/books/{book}/update', [BookController::class, 'update'])->name('bo
 Route::delete('/books/{book}/delete', [BookController::class, 'destroy'])->name('books.destroy');
 
 Route::get('/books/{book}/download', [PdfController::class, 'downloadPdf'])->name('books.download');
+Route::get('/books/{book}/view', [PdfController::class, 'viewBookPdf'])->name('books.view');
 
 // Route::get('/books', [BookController::class, 'index']);
 // Route::post('/books', [BookController::class, 'store']);

@@ -38,6 +38,7 @@
     <script src="{{ asset('js/books/delete.js') }}"></script>
     <script src="{{ asset('js/books/edit.js') }}"></script>
     <script src="{{ asset('js/books/main.js') }}"></script>
+    <script src="{{ asset('js/books/view-book.js') }}"></script>
 
     @yield('scripts')
 </body>
