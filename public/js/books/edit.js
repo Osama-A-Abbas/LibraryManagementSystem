@@ -27,6 +27,13 @@ function initEditHandlers(table) {
                     $('#cover_preview').empty();
                 }
 
+                // Display existing book PDF if available
+                if (response.book_pdf) {
+                    $('#book_pdf_preview').html(`<img src="${response.book_pdf}" class="img-thumbnail" style="max-height: 200px;">`);
+                } else {
+                    $('#book_pdf_preview').empty();
+                }
+
                 $('#modalTitle').html('Edit Book');
                 $('#saveBtn').html('Update Book');
                 $('#exampleModal').modal('show');

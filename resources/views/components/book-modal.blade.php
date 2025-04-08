@@ -63,7 +63,7 @@
                         <label for="book_pdf">Book PDF File</label>
                         <input type="file" id="book_pdf" name="book_pdf" class="form-control" accept="application/pdf" />
                         <span id="book_pdfError" class="text-danger error-messages"></span>
-                        {{-- <div id="cover_preview" class="mt-2"></div> --}}
+                        {{-- <div id="book_pdf_preview" class="mt-2"></div> --}}
                     </div>
                 </div>
                 <div class="modal-footer">

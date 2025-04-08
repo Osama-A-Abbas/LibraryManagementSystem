@@ -32,6 +32,20 @@ function initModalHandlers(table) {
         }
     });
 
+    // Handle book PDF upload preview
+    // $('#book_pdf').on('change', function() {
+    //     const file = this.files[0];
+    //     if (file) {
+    //         const reader = new FileReader();
+    //         reader.onload = function(e) {
+    //             $('#book_pdf_preview').html(`<img src="${e.target.result}" class="img-thumbnail" style="max-height: 200px;">`);
+    //         }
+    //         reader.readAsDataURL(file);
+    //     } else {
+    //         $('#book_pdf_preview').empty();
+    //     }
+    // });
+
     // Reset form and preview when modal is closed
     $('#exampleModal').on('hidden.bs.modal', function() {
         $('#bookForm')[0].reset();

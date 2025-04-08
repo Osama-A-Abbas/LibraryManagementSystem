@@ -47,7 +47,8 @@ class BookController extends Controller
             'author' => $book->author,
             'description' => $book->description,
             'published_at' => $book->published_at,
-            'cover_page' => $book->cover_page ? asset('storage/' . $book->cover_page) : null
+            'cover_page' => $book->cover_page ? asset('storage/' . $book->cover_page) : null,
+            // 'book_pdf' => $book->book_pdf ? asset('storage/' . $book->book_pdf) : null
         ]);
     }
 
