@@ -23,7 +23,6 @@ Route::delete('/books/{book}/delete', [BookController::class, 'destroy'])->name(
 Route::get('/books/{book}/download', [PdfController::class, 'downloadPdf'])->name('books.download');
 Route::get('/books/{book}/view', [PdfController::class, 'viewBookPdf'])->name('books.view');
 
-Route::resource('borrows', BorrowingController::class);
 
 
 
@@ -39,6 +38,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::post('/borrowing', [BorrowingController::class, 'store'])->name('borrowing.store');
+
 });
 
 

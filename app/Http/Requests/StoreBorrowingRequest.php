@@ -22,7 +22,6 @@ class StoreBorrowingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
             'book_id' => 'required|exists:books,id',
             // 'borrowing_status' => 'required|in:pending,approved,rejected,returned',
             'borrow_at' => 'required|date',
