@@ -24,9 +24,9 @@ class StoreBorrowingRequest extends FormRequest
         return [
             'user_id' => 'required|exists:users,id',
             'book_id' => 'required|exists:books,id',
-            'borrow_status' => 'required|in:pending,approved,rejected,returned',
-            'borrowed_at' => 'required|date',
-            'returned_at' => 'nullable|date',
+            // 'borrowing_status' => 'required|in:pending,approved,rejected,returned',
+            'borrow_at' => 'required|date',
+            'return_at' => 'nullable|date',
             'notes' => 'nullable|string',
         ];
     }
