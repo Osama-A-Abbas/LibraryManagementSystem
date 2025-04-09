@@ -7,6 +7,7 @@
 function initModalHandlers(table) {
     // Reset form when modal is hidden
     $('.ajax-modal').on('hidden.bs.modal', function() {
+        console.log('Modal hidden, resetting form');
         $('#bookForm')[0].reset();
         $('#book_id').val(''); // Clear the book_id
         $('.error-messages').html(''); // Clear any error messages
@@ -34,6 +35,7 @@ function initModalHandlers(table) {
 
     // Reset form and preview when modal is closed
     $('#exampleModal').on('hidden.bs.modal', function() {
+        console.log('Modal closed, resetting form and preview');
         $('#bookForm')[0].reset();
         $('#cover_preview').empty();
         $('.error-messages').empty();
@@ -48,6 +50,8 @@ function initModalHandlers(table) {
 
         var formData = new FormData($('#bookForm')[0]); // Get form data
         var bookId = $('#book_id').val(); // Check if book_id is set
+        console.log('Saving book with ID:', bookId);
+        console.log('Form data:', Object.fromEntries(formData));
 
         var url = bookId ? '/books/' + bookId + '/update' : '/books/store'; // Determine URL
 
@@ -84,7 +88,7 @@ function initModalHandlers(table) {
                     $('#published_atError').html(errors.published_at ? errors.published_at[0] : '');
                     $('#cover_pageError').html(errors.cover_page ? errors.cover_page[0] : '');
                     $('#book_pdfError').html(errors.book_pdf ? errors.book_pdf[0] : '');
-                    $('#number_of_copiesError').html(errors.book_pdf ? errors.book_pdf[0] : '');
+                    $('#number_of_copiesError').html(errors.number_of_copies ? errors.number_of_copies[0] : '');
 
                 } else {
                     Swal.fire({

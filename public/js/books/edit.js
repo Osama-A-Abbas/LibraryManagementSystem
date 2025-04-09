@@ -8,18 +8,22 @@ function initEditHandlers(table) {
     // Edit button click handler
     $(document).on('click', '.editButton', function() {
         const bookId = $(this).data('id');
+        console.log('Edit button clicked for book ID:', bookId);
 
         $.ajax({
             url: `/books/${bookId}/edit`,
             type: 'GET',
             success: function(response) {
+                console.log('Server response:', response);
                 $('#book_id').val(response.id);
                 $('#title').val(response.title);
                 $('#genre').val(response.genre);
                 $('#author').val(response.author);
                 $('#description').val(response.description);
                 $('#published_at').val(response.published_at);
-                $('#number_of_copies').val(response.number_of_copies); // not working
+                console.log('Setting number_of_copies to:', response.number_of_copies);
+                $('#number_of_copies').val(response.number_of_copies);
+                console.log('number_of_copies field value after setting:', $('#number_of_copies').val());
 
                 // Display existing cover image if available
                 if (response.cover_page) {
@@ -43,9 +47,9 @@ function initEditHandlers(table) {
                 $('#modalTitle').html('Edit Book');
                 $('#saveBtn').html('Update Book');
                 $('#exampleModal').modal('show');
-
             },
             error: function(error) {
+                console.error('Error fetching book details:', error);
                 Swal.fire({
                     icon: 'error',
                     title: 'Error!',

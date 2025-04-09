@@ -58,7 +58,8 @@
                         <span id="cover_pageError" class="text-danger error-messages"></span>
                         <div id="cover_preview" class="mt-2"></div>
                     </div>
-                     <!-- BOOK PDF, id = book_pdf-->
+
+                    <!-- BOOK PDF, id = book_pdf-->
                      <div class="form-group mb-3">
                         <label for="book_pdf">Book PDF File</label>
                         <input type="file" id="book_pdf" name="book_pdf" class="form-control" accept="application/pdf" />
@@ -72,6 +73,7 @@
                         <span id="number_of_copiesError" class="text-danger error-messages"></span>
                     </div>
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="saveBtn"></button>

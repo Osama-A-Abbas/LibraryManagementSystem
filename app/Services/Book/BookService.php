@@ -5,6 +5,8 @@ namespace App\Services\Book;
 use App\Models\Book;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class BookService
 {
@@ -31,14 +33,25 @@ class BookService
                     : 'No Cover';
             })
             ->addColumn('action', function ($row) {
-                return '<a href="javascript:void(0)" class="btn btn-sm btn-info editButton" data-id="' . $row->id . '">Edit</a>
-                        <a href="javascript:void(0)" class="btn btn-sm btn-danger deleteButton" data-id="' . $row->id . '">Delete</a>
-                        <a href="javascript:void(0)" class="btn btn-sm btn-primary viewButton" data-id="' . $row->id . '">View</a>
+                $buttons = '';
+
+                // Check if user has permission to edit books
+                if (Auth::check() && Gate::allows('edit books')) {
+                    $buttons .= '<a href="javascript:void(0)" class="btn btn-sm btn-info editButton" data-id="' . $row->id . '">Edit</a>';
+                }
+
+                // Check if user has permission to delete books
+                if (Auth::check() && Gate::allows('delete books')) {
+                    $buttons .= '<a href="javascript:void(0)" class="btn btn-sm btn-danger deleteButton" data-id="' . $row->id . '">Delete</a>';
+                }
+
+                // Add other buttons that don't require special permissions
+                $buttons .= '<a href="javascript:void(0)" class="btn btn-sm btn-primary viewButton" data-id="' . $row->id . '">View</a>
                         <a href="javascript:void(0)" class="btn btn-sm btn-success downloadButton" data-id="' . $row->id . '">Download</a>
                         <a href="javascript:void(0)" class="btn btn-sm btn-warning borrowButton" data-id="' . $row->id . '">Borrow</a>
-                        <a href="javascript:void(0)" class="btn btn-sm btn-secondary returnButton" data-id="' . $row->id . '">Return</a>
-                        ';
+                        <a href="javascript:void(0)" class="btn btn-sm btn-secondary returnButton" data-id="' . $row->id . '">Return</a>';
 
+                return $buttons;
             })
             ->rawColumns(['action', 'cover_page']);
     }
@@ -79,51 +92,51 @@ class BookService
         }
     }
 
-/**
- * Update an existing book in the database.
- *
- * This method handles the update of a book's details including
- * title, genre, author, description, and published date. It also
- * manages the upload and replacement of the cover image and PDF file
- * associated with the book, ensuring any existing files are deleted
- * before new ones are uploaded.
- *
- * @param \Illuminate\Http\Request $request The request object containing
- *                                          the book details and files.
- * @param \App\Models\Book $book The book model instance to be updated.
- *
- * @return \App\Models\Book The updated book model instance.
- *
- * @throws \Exception If the update process encounters an error and needs
- *                    to roll back the transaction.
- */
+    /**
+     * Update an existing book in the database.
+     *
+     * This method handles the update of a book's details including
+     * title, genre, author, description, number of copies, and published date. It also
+     * manages the upload and replacement of the cover image and PDF file
+     * associated with the book, ensuring any existing files are deleted
+     * before new ones are uploaded.
+     *
+     * @param \Illuminate\Http\Request $request The request object containing
+     *                                          the book details and files.
+     * @param \App\Models\Book $book The book model instance to be updated.
+     *
+     * @return \App\Models\Book The updated book model instance.
+     *
+     * @throws \Exception If the update process encounters an error and needs
+     *                    to roll back the transaction.
+     */
 
     public function updateBook($request, $book)
-{
-    try {
-        DB::beginTransaction();
+    {
+        try {
+            DB::beginTransaction();
 
-        $book->update($request->only(['title', 'genre', 'author', 'description', 'published_at', 'number_of_copies']));
+            $book->update($request->only(['title', 'genre', 'author', 'description', 'published_at', 'number_of_copies']));
 
-        if ($request->hasFile('cover_page')) {
-            $this->deleteFileIfExists($book->cover_page);
-            $book->cover_page = $this->handleFileUpload($request->file('cover_page'), "books/{$book->id}/cover");
+            if ($request->hasFile('cover_page')) {
+                $this->deleteFileIfExists($book->cover_page);
+                $book->cover_page = $this->handleFileUpload($request->file('cover_page'), "books/{$book->id}/cover");
+            }
+
+            if ($request->hasFile('book_pdf')) {
+                $this->deleteFileIfExists($book->book_pdf);
+                $book->book_pdf = $this->handleFileUpload($request->file('book_pdf'), "books/{$book->id}/pdf");
+            }
+
+            $book->save();
+
+            DB::commit();
+            return $book;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
         }
-
-        if ($request->hasFile('book_pdf')) {
-            $this->deleteFileIfExists($book->book_pdf);
-            $book->book_pdf = $this->handleFileUpload($request->file('book_pdf'), "books/{$book->id}/pdf");
-        }
-
-        $book->save();
-
-        DB::commit();
-        return $book;
-    } catch (\Exception $e) {
-        DB::rollBack();
-        throw $e;
     }
-}
 
     /**
      * Handle the upload of a file to the storage.
@@ -165,26 +178,14 @@ class BookService
     {
         try {
             DB::beginTransaction();
-
-            // // Delete associated files
-            // if ($book->cover_page) {
-            //     $this->deleteFileIfExists($book->cover_page);
-            // }
-
-            // if ($book->book_pdf) {
-            //     $this->deleteFileIfExists($book->book_pdf);
-            // }
-
+            //Delete the files from storage
             Storage::disk('public')->deleteDirectory("books/$book->id");
-
             // Delete the book record
             $book->delete();
-
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
             throw $e;
         }
     }
-
 }

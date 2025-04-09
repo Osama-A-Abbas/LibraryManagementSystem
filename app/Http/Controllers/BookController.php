@@ -25,7 +25,7 @@ class BookController extends Controller
     public function index()
     {
         $dataTables = $this->bookService->setBookDataTable();
-       return $dataTables->make(true);
+        return $dataTables->make(true);
     }
 
     public function store(StoreBookRequest $request)
@@ -49,7 +49,6 @@ class BookController extends Controller
             'published_at' => $book->published_at,
             'cover_page' => $book->cover_page ? asset('storage/' . $book->cover_page) : null,
             'number_of_copies' => $book->number_of_copies,
-
         ]);
     }
 
@@ -68,5 +67,4 @@ class BookController extends Controller
         $this->bookService->deleteBook($book);
         return response()->json(['success' => 'Book deleted successfully.']);
     }
-
 }
