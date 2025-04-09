@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Borrowing;
 use App\Http\Requests\StoreBorrowingRequest;
 use App\Http\Requests\UpdateBorrowingRequest;
+use Illuminate\Support\Facades\Log;
 
 class BorrowingController extends Controller
 {
@@ -33,15 +34,30 @@ class BorrowingController extends Controller
      */
     public function store(StoreBorrowingRequest $request)
     {
+        // Log the request data for debugging
+        Log::info('Borrowing request received', ['data' => $request->all()]);
+
         $validated = $request->validated();
         try {
-            $this->borrowing->create([
-                ...$validated,
-                'user_id' => $request->user()->id // or any user id you need to assign
+            // Create the borrowing record with correct field names
+            $borrowing = $this->borrowing->create([
+                'book_id' => $validated['book_id'],
+                'user_id' => $request->user()->id,
+                'borrowing_status' => 'pending',
+                'borrow_at' => $validated['borrow_at'],
+                'return_at' => $validated['return_at'] ?? null,
+                'notes' => $validated['notes'] ?? null,
             ]);
+
+            Log::info('Borrowing created successfully', ['borrowing' => $borrowing->toArray()]);
 
             return response()->json(['success' => 'Borrow Request Sent.'], 201);
         } catch (\Exception $e) {
+            Log::error('Failed to create borrowing', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
             return response()->json(['error' => 'Failed to send borrow request: ' . $e->getMessage()], 500);
         }
     }

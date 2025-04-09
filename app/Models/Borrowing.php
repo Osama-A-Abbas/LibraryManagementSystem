@@ -21,9 +21,9 @@ class Borrowing extends Model
     ];
 
     protected $casts = [
-        'borrowed_at' => 'date',
-        'returned_at' => 'date',
-        'borrowing_status' => 'enum:pending,approved,rejected,returned',
+        'borrow_at' => 'date',
+        'return_at' => 'date',
+        'borrowing_status' => 'string',
     ];
 
     public function user(): BelongsTo
