@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('genre');
+            $table->string('isbn')->nullable();
             $table->string('author')->nullable();
             $table->string('cover_page')->nullable(); // URL or path to the cover image
             $table->string('book_pdf')->nullable();

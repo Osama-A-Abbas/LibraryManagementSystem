@@ -49,7 +49,18 @@
                 </nav>
             @endif
         </header>
-    
+
+
+
+        @extends('layouts.book-layout')
+
+@section('title', 'Create Book')
+
+@section('content')
+    @include('components.book-modal')
+    @include('components.book-table')
+@endsection
+
 
         @if (Route::has('login'))
             <div class="h-14.5 hidden lg:block"></div>
