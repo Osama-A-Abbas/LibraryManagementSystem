@@ -19,7 +19,7 @@ class BookController extends Controller
 
     public function create()
     {
-        return view('books.create');
+        return view('components.books-main');
     }
 
     public function index()
