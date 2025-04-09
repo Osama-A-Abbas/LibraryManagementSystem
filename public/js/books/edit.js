@@ -19,7 +19,8 @@ function initEditHandlers(table) {
                 $('#author').val(response.author);
                 $('#description').val(response.description);
                 $('#published_at').val(response.published_at);
-                $('#number_of_copies').val(response.number_of_copies);
+                $('#number_of_copies').val(response.number_of_copies); // not working
+
                 // Display existing cover image if available
                 if (response.cover_page) {
                     $('#cover_preview').html(`<img src="${response.cover_page}" class="img-thumbnail" style="max-height: 200px;">`);
@@ -42,6 +43,7 @@ function initEditHandlers(table) {
                 $('#modalTitle').html('Edit Book');
                 $('#saveBtn').html('Update Book');
                 $('#exampleModal').modal('show');
+
             },
             error: function(error) {
                 Swal.fire({
