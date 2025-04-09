@@ -16,18 +16,28 @@ class RoleAndPermissionSeeder extends Seeder
     public function run(): void
     {
           // Create permissions
-          Permission::create(['name' => 'view books']);
-          Permission::create(['name' => 'create books']);
-          Permission::create(['name' => 'edit books']);
-          Permission::create(['name' => 'delete books']);
-          Permission::create(['name' => 'download books']);
-          Permission::create(['name' => 'borrow books']);
+          Permission::create(['name' => 'view books']); //user
+          Permission::create(['name' => 'download books']); //user
+          Permission::create(['name' => 'borrow books']); //user
+          Permission::create(['name' => 'create books']); //admin
+          Permission::create(['name' => 'edit books']); //admin
+          Permission::create(['name' => 'delete books']); //admin
 
-          Permission::create(['name' => 'view borrowings']);
-          Permission::create(['name' => 'create borrowings']);
-          Permission::create(['name' => 'edit borrowings']);
-          Permission::create(['name' => 'delete borrowings']);
 
+          Permission::create(['name' => 'view borrowings']); //admin & user
+          Permission::create(['name' => 'create borrowings']); //admin & user
+          Permission::create(['name' => 'edit borrowings']); //admin & user
+          Permission::create(['name' => 'delete borrowings']); //admin
+
+          Permission::create(['name' => 'view users']); 
+          Permission::create(['name' => 'edit users']);
+          Permission::create(['name' => 'delete users']);
+          Permission::create(['name' => 'manage user roles']);
+
+        //   Permission::create(['name' => 'view genres']);
+        //   Permission::create(['name' => 'create genres']);
+        //   Permission::create(['name' => 'edit genres']);
+        //   Permission::create(['name' => 'delete genres']);
 
         //   create admin user and give it all permission
         Role::create(['name' => 'admin']);
