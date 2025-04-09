@@ -39,6 +39,7 @@
     <script src="{{ asset('js/books/edit.js') }}"></script>
     <script src="{{ asset('js/books/main.js') }}"></script>
     <script src="{{ asset('js/books/view-book.js') }}"></script>
+    <script src="{{ asset('js/books/borrow.js') }}"></script>
 
     @yield('scripts')
 </body>

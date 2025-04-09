@@ -33,4 +33,6 @@ $(document).ready(function() {
 
     // Initialize delete button handlers
     initDeleteHandlers(booksTable);
+
+    initBorrowHandlers(booksTable);
 });
