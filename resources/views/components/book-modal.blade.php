@@ -63,7 +63,13 @@
                         <label for="book_pdf">Book PDF File</label>
                         <input type="file" id="book_pdf" name="book_pdf" class="form-control" accept="application/pdf" />
                         <span id="book_pdfError" class="text-danger error-messages"></span>
-                        {{-- <div id="book_pdf_preview" class="mt-2"></div> --}}
+                    </div>
+
+                    <!--number_of_copies-->
+                    <div class="form-group mb-3">
+                        <label for="number_of_copies">Number of Copies in Stock</label>
+                        <input type="number" id="number_of_copies" name="number_of_copies" class="form-control" min="0"/>
+                        <span id="number_of_copiesError" class="text-danger error-messages"></span>
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -7,6 +7,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Book extends Model
 {
+    protected static function booted()
+{
+
+    //set is_available attribute to false if the number of copies is 0
+    static::saving(function ($book) {
+        $book->is_available = $book->number_of_copies > 0;
+    });
+}
+
     protected $fillable = [
         'title',
         'genre',
@@ -24,7 +33,7 @@ class Book extends Model
         'published_at' => 'datetime',
     ];
 
-    
+
     public function borrowings(): HasMany
     {
         return $this->hasMany(Borrowing::class);
