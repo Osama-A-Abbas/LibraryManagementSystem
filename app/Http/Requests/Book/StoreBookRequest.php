@@ -27,6 +27,7 @@ class StoreBookRequest extends FormRequest
             'author' => 'required|string|max:255',
             'description' => 'required|string|max:255',
             'published_at' => 'required|date',
+            'number_of_copies'=> 'required|integer|min:1',
             'cover_page' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'book_pdf' => 'required|mimes:pdf|max:2048',
         ];

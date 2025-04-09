@@ -57,7 +57,7 @@ class BookService
         try {
             DB::beginTransaction();
 
-            $book = $this->book->create($request->only(['title', 'genre', 'author', 'description', 'published_at']));
+            $book = $this->book->create($request->only(['title', 'genre', 'author', 'description', 'published_at', 'number_of_copies']));
             $book->save(); // Save first to get ID
 
             // Upload files using book ID
