@@ -103,7 +103,7 @@ class BookService
     try {
         DB::beginTransaction();
 
-        $book->update($request->only(['title', 'genre', 'author', 'description', 'published_at']));
+        $book->update($request->only(['title', 'genre', 'author', 'description', 'published_at', 'number_of_copies']));
 
         if ($request->hasFile('cover_page')) {
             $this->deleteFileIfExists($book->cover_page);

@@ -10,7 +10,7 @@ class Book extends Model
     protected static function booted()
 {
 
-    //set is_available attribute to false if the number of copies is 0
+    //set is_available attribute to false/true based on the number of copies, if = 0 then false, if > 0 then true
     static::saving(function ($book) {
         $book->is_available = $book->number_of_copies > 0;
     });

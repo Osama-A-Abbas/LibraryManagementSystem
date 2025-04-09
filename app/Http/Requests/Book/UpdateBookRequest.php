@@ -22,11 +22,13 @@ class UpdateBookRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|max:500',
             'genre' => 'required|string|max:255',
             'author' => 'required|string|max:255',
             'description' => 'required|string|max:255',
             'published_at' => 'required|date',
+            'number_of_copies'=> 'required|integer|min:0|max:999999',
+            'is_available' => 'sometimes|boolean',
             'cover_page' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
             'book_pdf' => 'sometimes|mimes:pdf|max:2048',
         ];

@@ -19,14 +19,13 @@ function initEditHandlers(table) {
                 $('#author').val(response.author);
                 $('#description').val(response.description);
                 $('#published_at').val(response.published_at);
-
+                $('#number_of_copies').val(response.number_of_copies);
                 // Display existing cover image if available
                 if (response.cover_page) {
                     $('#cover_preview').html(`<img src="${response.cover_page}" class="img-thumbnail" style="max-height: 200px;">`);
                 } else {
                     $('#cover_preview').empty();
                 }
-
                 // Display existing book PDF if available
                 if (response.book_pdf) {
                     $('#book_pdf_preview').html(`
