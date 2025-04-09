@@ -35,8 +35,12 @@ class BorrowingController extends Controller
     {
         $validated = $request->validated();
         try {
-            $this->borrowing->create($validated);
-            return response()->json(['success' => 'Borrow Request Sent.'], 200);
+            $this->borrowing->create([
+                ...$validated,
+                'user_id' => $request->user()->id // or any user id you need to assign
+            ]);
+
+            return response()->json(['success' => 'Borrow Request Sent.'], 201);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to send borrow request: ' . $e->getMessage()], 500);
         }

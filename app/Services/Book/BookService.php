@@ -57,7 +57,7 @@ class BookService
         try {
             DB::beginTransaction();
 
-            $book = new Book($request->only(['title', 'genre', 'author', 'description', 'published_at']));
+            $book = $this->book->create($request->only(['title', 'genre', 'author', 'description', 'published_at']));
             $book->save(); // Save first to get ID
 
             // Upload files using book ID
@@ -153,7 +153,7 @@ class BookService
     }
 
     //---------------------------------------------------------------------------------------------\\
- 
+
     /**
      * Delete a book and its associated files.
      *
@@ -166,14 +166,16 @@ class BookService
         try {
             DB::beginTransaction();
 
-            // Delete associated files
-            if ($book->cover_page) {
-                $this->deleteFileIfExists($book->cover_page);
-            }
+            // // Delete associated files
+            // if ($book->cover_page) {
+            //     $this->deleteFileIfExists($book->cover_page);
+            // }
 
-            if ($book->book_pdf) {
-                $this->deleteFileIfExists($book->book_pdf);
-            }
+            // if ($book->book_pdf) {
+            //     $this->deleteFileIfExists($book->book_pdf);
+            // }
+
+            Storage::disk('public')->deleteDirectory("books/$book->id");
 
             // Delete the book record
             $book->delete();
