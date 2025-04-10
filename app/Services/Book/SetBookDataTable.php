@@ -9,8 +9,24 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Yajra\DataTables\DataTables;
 
+/**
+ * SetBookDataTable Service
+ *
+ * This service sets up and configures DataTables for the book listing functionality.
+ * It handles the representation of book data in tables, including column formatting
+ * and action buttons based on user permissions.
+ */
 class SetBookDataTable
 {
+    /**
+     * Constructor with dependency injection.
+     *
+     * @param Book $book Book model for database queries
+     * @param DataTables $dataTables DataTables service for table generation
+     * @param Guard $auth Authentication service to check user login status
+     * @param Gate $gate Authorization service to check user permissions
+     * @param Borrowing $borrowing Borrowing model to check book availability
+     */
     public function __construct(
         protected Book $book,
         protected DataTables $dataTables,
@@ -21,6 +37,11 @@ class SetBookDataTable
 
     /**
      * Set up the DataTable for the books list.
+     *
+     * Configures the DataTable with book data, formats columns,
+     * and adds action buttons based on user permissions.
+     *
+     * @return \Yajra\DataTables\DataTableAbstract Configured DataTable instance
      */
     public function execute(): \Yajra\DataTables\DataTableAbstract
     {
@@ -44,6 +65,11 @@ class SetBookDataTable
             ->rawColumns(['action', 'cover_page']);
     }
 
+    /**
+     * Format the cover image column for display in the DataTable.
+     *
+     * @return Closure Function that formats the cover image HTML
+     */
     protected function getCoverImageColumn(): Closure
     {
         return function ($book) {
@@ -56,6 +82,14 @@ class SetBookDataTable
         };
     }
 
+    /**
+     * Build the set of action buttons for each book row.
+     *
+     * Collects and filters buttons based on user permissions.
+     *
+     * @param Book $book The book model for the current row
+     * @return string HTML string containing all action buttons
+     */
     protected function buildActionButtons($book): string
     {
         $buttons = collect([
@@ -70,6 +104,12 @@ class SetBookDataTable
         return $buttons->filter()->implode('');
     }
 
+    /**
+     * Generate the edit button if user has permission.
+     *
+     * @param Book $book The book model
+     * @return string|null HTML for edit button or null if not allowed
+     */
     protected function getEditButton($book): ?string
     {
         if ($this->auth->check() && $this->gate->allows('edit books')) {
@@ -78,6 +118,12 @@ class SetBookDataTable
         return null;
     }
 
+    /**
+     * Generate the delete button if user has permission.
+     *
+     * @param Book $book The book model
+     * @return string|null HTML for delete button or null if not allowed
+     */
     protected function getDeleteButton($book): ?string
     {
         if ($this->auth->check() && $this->gate->allows('delete books')) {
@@ -86,16 +132,38 @@ class SetBookDataTable
         return null;
     }
 
+    /**
+     * Generate the view button for book details.
+     *
+     * @param Book $book The book model
+     * @return string HTML for view button
+     */
     protected function getViewButton($book): string
     {
         return $this->createButton('view', 'primary', 'View', $book->id);
     }
 
+    /**
+     * Generate the download button for book PDF.
+     *
+     * @param Book $book The book model
+     * @return string HTML for download button
+     */
     protected function getDownloadButton($book): string
     {
         return $this->createButton('download', 'success', 'Download', $book->id);
     }
 
+    /**
+     * Generate the borrow button for a book.
+     *
+     * Button is disabled if:
+     * - Book is not available
+     * - User has already borrowed this book
+     *
+     * @param Book $book The book model
+     * @return string|null HTML for borrow button or disabled button with tooltip
+     */
     protected function getBorrowButton($book): ?string
     {
         if (!$book->is_available) {
@@ -121,12 +189,24 @@ class SetBookDataTable
         return $this->createButton('borrow', 'warning', 'Borrow', $book->id);
     }
 
-    // -------------------  return button / not needed for now / implement in borrowing  -----------------------------\\
+    /**
+     * Return button method - currently commented out.
+     * Book returns are handled in the borrowing section instead.
+     *
+     * @param Book $book The book model
+     * @return string HTML for return button
+     */
     // protected function getReturnButton($book): string
     // {
     //     return $this->createButton('return', 'secondary', 'Return', $book->id);
     // }
 
+    /**
+     * Check if the current user has an active borrowing for this book.
+     *
+     * @param int $bookId The book ID to check
+     * @return bool True if user has an active borrowing for this book
+     */
     protected function userHasActiveBorrowing(int $bookId): bool
     {
         return $this->auth->check() &&
@@ -136,6 +216,15 @@ class SetBookDataTable
             ->exists();
     }
 
+    /**
+     * Create a standard action button.
+     *
+     * @param string $type Button type (edit, delete, view, etc.)
+     * @param string $color Bootstrap button color
+     * @param string $label Button text
+     * @param int $id Book ID
+     * @return string HTML button element
+     */
     protected function createButton(
         string $type,
         string $color,
@@ -151,6 +240,16 @@ class SetBookDataTable
         );
     }
 
+    /**
+     * Create a disabled action button with tooltip.
+     *
+     * @param string $type Button type (edit, delete, view, etc.)
+     * @param string $color Bootstrap button color
+     * @param string $label Button text
+     * @param int $id Book ID
+     * @param string $tooltip Tooltip text explaining why button is disabled
+     * @return string HTML button element with tooltip
+     */
     protected function createDisabledButton(
         string $type,
         string $color,
