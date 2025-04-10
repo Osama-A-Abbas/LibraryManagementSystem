@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Borrowing;
-use App\Http\Requests\StoreBorrowingRequest;
+use App\Http\Requests\Borrowing\StoreBorrowingRequest;
+use App\Http\Requests\Borrowing\UpdateBorrowingRequest;
 use App\Services\BorrowingServices\BorrowingCreateService;
 use App\Services\BorrowingServices\BorrowingDataTableService;
 use App\Services\BorrowingServices\BorrowingDetailService;
@@ -113,11 +114,11 @@ class BorrowingController extends Controller
      * Uses BorrowingStatusService to handle the specific logic for each action.
      * Includes permission checks before allowing status changes.
      *
-     * @param Request $request The HTTP request with action and status data
+     * @param UpdateBorrowingRequest $request The validated request with action and status data
      * @param Borrowing $borrowing The borrowing to update
      * @return \Illuminate\Http\JsonResponse JSON response with operation result
      */
-    public function update(Request $request, Borrowing $borrowing)
+    public function update(UpdateBorrowingRequest $request, Borrowing $borrowing)
     {
         $action = $request->input('action');
         $result = [];
