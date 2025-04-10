@@ -6,13 +6,25 @@ use App\Models\Borrowing;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
+/**
+ * BorrowingDataTableService
+ *
+ * Responsible for configuring and building the DataTable for borrowings display.
+ * Handles filter logic, column formatting, and action button generation.
+ */
 class BorrowingDataTableService
 {
     /**
      * Handle DataTable setup for borrowings listing
      *
-     * @param Borrowing $borrowing
-     * @return \Illuminate\Http\JsonResponse
+     * Configures a DataTable for borrowing records with the following features:
+     * - User permission-based filtering (users see only their own borrowings unless admin)
+     * - Eager loading of book and user relationships for performance
+     * - Custom formatting for status display with appropriate styling
+     * - Dynamic action buttons based on user permissions and borrowing state
+     *
+     * @param Borrowing $borrowing The borrowing model for querying
+     * @return \Illuminate\Http\JsonResponse JSON response for DataTables
      */
     public function handle(Borrowing $borrowing)
     {
@@ -51,8 +63,19 @@ class BorrowingDataTableService
     /**
      * Generate action buttons HTML for each borrowing row
      *
-     * @param Borrowing $row
-     * @return string
+     * Creates a set of buttons based on:
+     * - The current user's permissions
+     * - The status of the borrowing
+     * - The relationship between the user and the borrowing
+     *
+     * Possible buttons include:
+     * - Return: For borrowers to return their approved borrowings
+     * - Approve/Reject: For admins to process pending requests
+     * - Manage: For admins to manage any borrowing
+     * - View: For all users to see borrowing details
+     *
+     * @param Borrowing $row The borrowing record
+     * @return string HTML string with action buttons
      */
     private function generateActionButtons($row)
     {

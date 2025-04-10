@@ -5,15 +5,29 @@ namespace App\Services\BorrowingServices;
 use App\Models\Borrowing;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * BorrowingCreateService
+ *
+ * Handles the creation of new borrowing records in the system.
+ * Manages the process of creating borrowing requests including validation,
+ * database operations, and error handling.
+ */
 class BorrowingCreateService
 {
     /**
      * Create a new borrowing record
      *
-     * @param Borrowing $borrowing
-     * @param array $validated
-     * @param int $userId
-     * @return array
+     * Processes a validated borrowing request and creates a new record in the database.
+     * The method:
+     * - Logs the incoming request data for audit/debugging
+     * - Creates the borrowing with a default 'pending' status
+     * - Handles error conditions with appropriate message and status code
+     * - Logs successful creation for tracking
+     *
+     * @param Borrowing $borrowing The borrowing model
+     * @param array $validated Validated request data from the controller
+     * @param int $userId ID of the user making the borrowing request
+     * @return array Response with success/error message and status code
      */
     public function handle(Borrowing $borrowing, array $validated, int $userId)
     {

@@ -12,8 +12,26 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 
+/**
+ * BorrowingController
+ *
+ * Manages all borrowing operations including listing, creation,
+ * viewing details, and updating borrowing statuses.
+ *
+ * This controller uses specialized services to handle different aspects of
+ * borrowing management, following SOLID principles and separation of concerns.
+ */
 class BorrowingController extends Controller
 {
+    /**
+     * Constructor with dependency injection for all required services
+     *
+     * @param Borrowing $borrowing The Borrowing model
+     * @param BorrowingDataTableService $dataTableService Service for DataTable operations
+     * @param BorrowingCreateService $createService Service for creating borrowings
+     * @param BorrowingDetailService $detailService Service for fetching borrowing details
+     * @param BorrowingStatusService $statusService Service for managing borrowing statuses
+     */
     public function __construct(
         protected Borrowing $borrowing,
         protected BorrowingDataTableService $dataTableService,
@@ -23,7 +41,13 @@ class BorrowingController extends Controller
     ) {}
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of borrowings
+     *
+     * Returns a DataTable view for AJAX requests or the index view for regular requests.
+     * Uses the BorrowingDataTableService to handle DataTable configuration and rendering.
+     *
+     * @param Request $request The HTTP request
+     * @return \Illuminate\View\View|\Illuminate\Http\JsonResponse View or JSON response
      */
     public function index(Request $request)
     {
@@ -35,7 +59,13 @@ class BorrowingController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a new borrowing request
+     *
+     * Uses BorrowingCreateService to handle validation, creation, and error handling.
+     * Returns appropriate JSON response based on the operation result.
+     *
+     * @param StoreBorrowingRequest $request Validated request with borrowing data
+     * @return \Illuminate\Http\JsonResponse JSON response with status
      */
     public function store(StoreBorrowingRequest $request)
     {
@@ -54,7 +84,13 @@ class BorrowingController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display detailed information about a specific borrowing
+     *
+     * First checks if the user has permission to view the borrowing,
+     * then uses BorrowingDetailService to load and format borrowing data.
+     *
+     * @param Borrowing $borrowing The borrowing to display
+     * @return \Illuminate\Http\JsonResponse JSON response with borrowing details
      */
     public function show(Borrowing $borrowing)
     {
@@ -67,7 +103,19 @@ class BorrowingController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update a borrowing's status based on the requested action
+     *
+     * Handles different status change operations including:
+     * - return: Mark a borrowing as returned
+     * - approve/reject: Approve or reject a pending borrowing request
+     * - update_status: Manually update status to any valid status
+     *
+     * Uses BorrowingStatusService to handle the specific logic for each action.
+     * Includes permission checks before allowing status changes.
+     *
+     * @param Request $request The HTTP request with action and status data
+     * @param Borrowing $borrowing The borrowing to update
+     * @return \Illuminate\Http\JsonResponse JSON response with operation result
      */
     public function update(Request $request, Borrowing $borrowing)
     {

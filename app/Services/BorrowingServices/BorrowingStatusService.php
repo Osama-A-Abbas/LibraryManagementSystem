@@ -5,13 +5,25 @@ namespace App\Services\BorrowingServices;
 use App\Models\Borrowing;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * BorrowingStatusService
+ *
+ * Manages all borrowing status changes in the application.
+ * Provides specialized methods for common status operations like returning,
+ * approving/rejecting, and manual status updates.
+ *
+ * Includes error handling and logging for all operations.
+ */
 class BorrowingStatusService
 {
     /**
      * Handle returning a borrowed book
      *
-     * @param Borrowing $borrowing
-     * @return array
+     * Updates a borrowing record's status to 'returned' when a user returns a book.
+     * Includes error handling with appropriate error messages and logging.
+     *
+     * @param Borrowing $borrowing The borrowing record to mark as returned
+     * @return array Response with success/error message and optional status code
      */
     public function handleReturn(Borrowing $borrowing)
     {
@@ -29,9 +41,13 @@ class BorrowingStatusService
     /**
      * Handle approving or rejecting a borrowing request
      *
-     * @param Borrowing $borrowing
-     * @param string $action
-     * @return array
+     * Updates a borrowing record's status to either 'approved' or 'rejected'
+     * based on the admin's decision. Supports the borrowing workflow for
+     * processing pending requests.
+     *
+     * @param Borrowing $borrowing The borrowing record to update
+     * @param string $action Either 'approve' or 'reject'
+     * @return array Response with success/error message and optional status code
      */
     public function handleApproveReject(Borrowing $borrowing, string $action)
     {
@@ -49,9 +65,13 @@ class BorrowingStatusService
     /**
      * Handle manual status update
      *
-     * @param Borrowing $borrowing
-     * @param string $newStatus
-     * @return array
+     * Allows administrators to manually set a borrowing record to any valid status.
+     * Includes validation to ensure the new status is one of the allowed values.
+     * This provides flexibility for managing exceptional cases.
+     *
+     * @param Borrowing $borrowing The borrowing record to update
+     * @param string $newStatus The new status to set (pending/approved/rejected/returned)
+     * @return array Response with success/error message and optional status code
      */
     public function handleStatusUpdate(Borrowing $borrowing, string $newStatus)
     {
@@ -73,8 +93,11 @@ class BorrowingStatusService
     /**
      * Log error details
      *
-     * @param string $message
-     * @param \Exception $e
+     * Centralizes error logging for all status update operations.
+     * Records the error message and stack trace for debugging purposes.
+     *
+     * @param string $message Description of the error context
+     * @param \Exception $e The exception that occurred
      * @return void
      */
     private function logError(string $message, \Exception $e)
