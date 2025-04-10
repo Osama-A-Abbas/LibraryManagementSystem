@@ -26,14 +26,42 @@ class Borrowing extends Model
     ];
 
     protected $casts = [
-        'borrow_at' => 'date',
-        'return_at' => 'date',
+        'borrow_at' => 'datetime',
+        'return_at' => 'datetime',
         'borrowing_status' => 'string',
     ];
 
-    public function getDateAtAttribute($value)
+    /**
+     * Format borrow_at date to Y-m-d-h-m format
+     *
+     * @param mixed $value
+     * @return string|null
+     */
+    public function getBorrowAtAttribute($value)
     {
         return $value ? \Carbon\Carbon::parse($value)->format('Y-m-d') : null;
+    }
+
+    /**
+     * Format return_at date to Y-m-d-h-m format
+     *
+     * @param mixed $value
+     * @return string|null
+     */
+    public function getReturnAtAttribute($value)
+    {
+        return $value ? \Carbon\Carbon::parse($value)->format('Y-m-d') : null;
+    }
+
+    /**
+     * Format created_at date to Y-m-d-h-m format
+     *
+     * @param mixed $value
+     * @return string|null
+     */
+    public function getCreatedAtAttribute($value)
+    {
+        return $value ? \Carbon\Carbon::parse($value)->format('Y-m-d H:i') : null;
     }
 
     public function user(): BelongsTo
