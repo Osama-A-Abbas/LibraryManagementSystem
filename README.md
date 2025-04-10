@@ -255,6 +255,11 @@ The application uses service classes to maintain clean separation of concerns:
 - Use services for business logic
 - Add PHPDoc comments
 
+#### Used PHP Packages
+- **Spatie Laravel Permission** (^6.16): Role and permission management
+- **Yajra Laravel DataTables** (12.0): Server-side processing for DataTables
+- **Laravel Breeze** (^2.3):  Authentication scaffolding
+
 ## Contributors
 
 - Osama Ali Abbas - 
