@@ -24,7 +24,13 @@ class DatabaseSeeder extends Seeder
             'remember_token' => Str::random(10),
         ]);
 
-        // User::factory(10)->create();
+        User::factory()->create([
+            'name' => 'Regular User',
+            'email' => 'user@example.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('password'),
+            'remember_token' => Str::random(10),
+        ]);
 
         $this->call([
             RoleAndPermissionSeeder::class,
