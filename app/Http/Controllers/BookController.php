@@ -6,6 +6,7 @@ use App\Http\Requests\Book\StoreBookRequest;
 use App\Http\Requests\Book\UpdateBookRequest;
 use App\Models\Book;
 use App\Services\Book\BookService;
+use App\Services\Book\SetBookDataTable;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
@@ -15,6 +16,7 @@ class BookController extends Controller
     public function __construct(
         protected Book $book,
         protected BookService $bookService,
+        protected SetBookDataTable $setBookDataTable
     ) {}
 
     public function create()
@@ -24,7 +26,7 @@ class BookController extends Controller
 
     public function index()
     {
-        $dataTables = $this->bookService->setBookDataTable();
+        $dataTables = $this->setBookDataTable->execute();
         return $dataTables->make(true);
     }
 
