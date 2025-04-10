@@ -33,7 +33,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/books/create">Books</a>
+                        <a class="nav-link" href="{{ route('books.create') }}">Books</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="/borrowings">Borrowings</a>
