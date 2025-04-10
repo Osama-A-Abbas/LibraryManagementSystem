@@ -29,7 +29,7 @@ Route::get('/borrowings/{borrowing}', [BorrowingController::class, 'show'])->nam
 Route::put('/borrowings/{borrowing}', [BorrowingController::class, 'update'])->name('borrowing.update');
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return redirect()->route('books.create');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
