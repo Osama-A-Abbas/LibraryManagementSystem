@@ -1,9 +1,16 @@
 <!-- Book Table Component -->
+@php
+    use Illuminate\Support\Facades\Auth;
+@endphp
+
 <div class="row">
-    <div class="col-md-10 offset-1" style="margin-top: 100px">
-        @if (Auth::check() && Auth::user()->hasPermissionTo('create books'))
+    <div class="col-md-12" style="margin-top: 50px">
+        <h1>Book Management</h1>
+
+        @if (Auth::check() && Auth::user()->can('create books'))
             <a class="btn btn-info mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Book</a>
         @endif
+
         <table id="booksTable" class="table">
             <thead>
                 <tr>
