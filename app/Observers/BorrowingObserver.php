@@ -22,12 +22,4 @@ class BorrowingObserver
             Log::error('Error in BorrowingObserver@created: ' . $e->getMessage());
         }
     }
-
-    /**
-     * Handle the Borrowing "updated" event.
-     */
-    public function updated(Borrowing $borrowing): void
-    {
-        //
-    }
 }

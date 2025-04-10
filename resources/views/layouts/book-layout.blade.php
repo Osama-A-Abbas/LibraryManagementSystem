@@ -38,11 +38,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/borrowings">Borrowings</a>
                     </li>
-                    @if (Auth::check() && Auth::user()->hasRole('admin'))
+                    {{-- @if (Auth::check() && Auth::user()->hasRole('admin'))
                     <li class="nav-item">
                         <a class="nav-link" href="/admin">Admin</a>
                     </li>
-                    @endif
+                    @endif --}}
                 </ul>
                 <ul class="navbar-nav">
                     @if (Auth::check())
