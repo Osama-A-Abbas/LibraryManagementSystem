@@ -45,6 +45,10 @@ class BookService
                     $buttons .= '<a href="javascript:void(0)" class="btn btn-sm btn-danger deleteButton" data-id="' . $row->id . '">Delete</a>';
                 }
 
+                if (Auth::check() && Gate::allows('borrow-book')) {
+                    $buttons .= ' <a href="javascript:void(0)" class="btn btn-sm btn-warning borrowButton" data-id="' . $row->id . '" data-is-available="true">Borrow</a>';
+                }
+
                 // Add other buttons that don't require special permissions
                 $buttons .= '<a href="javascript:void(0)" class="btn btn-sm btn-primary viewButton" data-id="' . $row->id . '">View</a>
                         <a href="javascript:void(0)" class="btn btn-sm btn-success downloadButton" data-id="' . $row->id . '">Download</a>
@@ -56,6 +60,7 @@ class BookService
             ->rawColumns(['action', 'cover_page']);
     }
 
+    private
     //---------------------------------------------------------------------------------------------\\
     // ------------  BookController Store + Update methods and helpers -----------------------------\\
 
