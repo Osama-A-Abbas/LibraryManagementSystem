@@ -1,3 +1,7 @@
+@php
+    use Illuminate\Support\Facades\Auth;
+@endphp
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,7 +21,7 @@
     @yield('styles')
 </head>
 
-<body>
+<body class="{{ Auth::check() ? 'user-authenticated' : 'user-guest' }}">
     @yield('content')
 
     <!-- JavaScript -->
