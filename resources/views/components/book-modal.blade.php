@@ -23,10 +23,38 @@
                         <select id="genre" name="genre" class="form-control">
                             <option disabled selected>Choose Genre...</option>
                             <option value="fiction">Fiction</option>
-                            <option value="nonfiction">Nonfiction</option>
+                            <option value="nonfiction">Non-Fiction</option>
+                            <option value="science_fiction">Science Fiction</option>
+                            <option value="fantasy">Fantasy</option>
+                            <option value="mystery">Mystery</option>
+                            <option value="biography">Biography</option>
+                            <option value="self_help">Self-Help</option>
+                            <option value="romance">Romance</option>
+                            <option value="thriller">Thriller</option>
+                            <option value="historical">Historical</option>
+                            <option value="poetry">Poetry</option>
+                            <option value="graphic_novel">Graphic Novel</option>
+                            <option value="children">Children's</option>
+                            <option value="young_adult">Young Adult</option>
+                            <option value="cookbook">Cookbook</option>
+                            <option value="travel">Travel</option>
+                            <option value="health">Health</option>
+                            <option value="religion">Religion</option>
+                            <option value="philosophy">Philosophy</option>
+                            <option value="business">Business</option>
+                            <option value="technology">Technology</option>
+                            <option value="true_crime">True Crime</option>
+                            <option value="memoir">Memoir</option>
+                            <option value="action">Action</option>
+                            <option value="adventure">Adventure</option>
+                            <option value="comedy">Comedy</option>
+                            <option value="drama">Drama</option>
+                            <option value="horror">Horror</option>
+                            <option value="western">Western</option>
                         </select>
                         <span id="genreError" class="text-danger error-messages"></span>
                     </div>
+
 
                     <!-- AUTHOR, id = author-->
                     <div class="form-group mb-3">
@@ -39,8 +67,7 @@
                     <!-- DESCRIPTION, id = description-->
                     <div class="form-group mb-3">
                         <label for="description">Description</label>
-                        <textarea id="description" name="description" class="form-control" rows="3"
-                            placeholder="Book description..."></textarea>
+                        <textarea id="description" name="description" class="form-control" rows="3" placeholder="Book description..."></textarea>
                         <span id="descriptionError" class="text-danger error-messages"></span>
                     </div>
 
@@ -60,16 +87,18 @@
                     </div>
 
                     <!-- BOOK PDF, id = book_pdf-->
-                     <div class="form-group mb-3">
+                    <div class="form-group mb-3">
                         <label for="book_pdf">Book PDF File</label>
-                        <input type="file" id="book_pdf" name="book_pdf" class="form-control" accept="application/pdf" />
+                        <input type="file" id="book_pdf" name="book_pdf" class="form-control"
+                            accept="application/pdf" />
                         <span id="book_pdfError" class="text-danger error-messages"></span>
                     </div>
 
                     <!--number_of_copies-->
                     <div class="form-group mb-3">
                         <label for="number_of_copies">Number of Copies in Stock</label>
-                        <input type="number" id="number_of_copies" name="number_of_copies" class="form-control" min="0"/>
+                        <input type="number" id="number_of_copies" name="number_of_copies" class="form-control"
+                            min="0" />
                         <span id="number_of_copiesError" class="text-danger error-messages"></span>
                     </div>
                 </div>
