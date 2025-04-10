@@ -43,7 +43,7 @@ class SetBookDataTable
      *
      * @return \Yajra\DataTables\DataTableAbstract Configured DataTable instance
      */
-    public function execute(): \Yajra\DataTables\DataTableAbstract
+    public function handle(): \Yajra\DataTables\DataTableAbstract
     {
         $books = $this->book->select([
             'id',

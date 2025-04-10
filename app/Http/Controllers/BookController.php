@@ -49,7 +49,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        $dataTables = $this->setBookDataTable->execute();
+        $dataTables = $this->setBookDataTable->handle();
         return $dataTables->make(true);
     }
 
