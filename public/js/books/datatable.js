@@ -18,18 +18,6 @@ function initDataTable() {
             { data: 'description', name: 'description' },
             { data: 'published_at', name: 'published_at' },
             { data: 'action', name: 'action', orderable: false, searchable: false }
-        ],
-        // Add custom CSS classes to improve DataTable styling
-        initComplete: function() {
-            // Add spacing to action buttons
-            $('.btn-sm').addClass('me-1');
-
-            // Add spacing to entries per page text
-            $('.dataTables_length label').addClass('me-2');
-        },
-        drawCallback: function() {
-            // Ensure buttons have spacing on each redraw
-            $('.btn-sm').addClass('me-1');
-        }
+        ]
     });
 }

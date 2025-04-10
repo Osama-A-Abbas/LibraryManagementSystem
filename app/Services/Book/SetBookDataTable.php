@@ -232,7 +232,7 @@ class SetBookDataTable
         int $id
     ): string {
         return sprintf(
-            '<a href="javascript:void(0)" class="btn btn-sm btn-%s %sButton me-1" data-id="%d">%s</a>',
+            '<a href="javascript:void(0)" class="btn btn-sm btn-%s %sButton" data-id="%d">%s</a>',
             $color,
             $type,
             $id,
@@ -258,7 +258,7 @@ class SetBookDataTable
         string $tooltip
     ): string {
         return sprintf(
-            '<a href="javascript:void(0)" class="btn btn-sm btn-%s %sButton disabled me-1"
+            '<a href="javascript:void(0)" class="btn btn-sm btn-%s %sButton disabled"
                 data-id="%d"
                 data-bs-toggle="tooltip"
                 title="%s">%s</a>',
