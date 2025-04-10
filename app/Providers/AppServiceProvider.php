@@ -23,11 +23,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::define('borrow-book', function (User $user, Book $book) {
-            return !Borrowing::where('user_id', $user->id)
-                ->where('book_id', $book->id)
-                ->exists();
-        });
+        // Gate::define('borrow-book', function (User $user, Book $book) {
+        //     return !Borrowing::where('user_id', $user->id)
+        //         ->where('book_id', $book->id)
+        //         ->exists();
+        // });
 
         // Gate::define('book-is-available', function (Book $book) {
         //     return $book->is_available
