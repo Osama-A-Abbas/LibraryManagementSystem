@@ -260,6 +260,13 @@ The application uses service classes to maintain clean separation of concerns:
 - **Yajra Laravel DataTables** (12.0): Server-side processing for DataTables
 - **Laravel Breeze** (^2.3):  Authentication scaffolding
 
+### Suggested Improvements:
+ - Some parts of the code can improved by using middlewares, polices, and gates.
+ - The Borrowing javascript files can be distributed into smaller functions for better readability and maintainability
+ - Complete the system cycle by adding the following systems (Delivery, Payment, BookProviders (Libraries)).
+ - Improving the UI design, and the blade components usage. 
+
+
 ## Contributors
 
 - Osama Ali Abbas 
