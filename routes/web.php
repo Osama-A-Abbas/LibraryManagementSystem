@@ -28,10 +28,6 @@ Route::get('/borrowings', [BorrowingController::class, 'index'])->name('borrowin
 Route::get('/borrowings/{borrowing}', [BorrowingController::class, 'show'])->name('borrowing.show');
 Route::put('/borrowings/{borrowing}', [BorrowingController::class, 'update'])->name('borrowing.update');
 
-Route::get('/dashboard', function () {
-    return redirect()->route('books.create');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
