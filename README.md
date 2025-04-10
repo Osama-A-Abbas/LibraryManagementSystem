@@ -1,66 +1,236 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Library Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A modern web-based library management system built with Laravel, featuring book management, borrowing system, and user role-based permissions.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### User Management
+- Role-based access control (admin, user)
+- User registration and authentication
+- Profile management
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Book Management
+- Complete CRUD operations for books
+- Book details include title, author, genre, description, cover image, and PDF version
+- Book availability tracking
+- Genre categorization
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Borrowing System
+- Request to borrow books
+- Admin approval workflow
+- Return management
+- Borrowing history tracking
+- Automatic availability updates
 
-## Learning Laravel
+### Admin Dashboard
+- **Book Management**:
+  - Create, edit, and delete books with full CRUD operations
+  - Upload and manage book cover images and PDF files
+  - Monitor book availability and inventory
+  - Control which books are available for borrowing
+  
+- **Borrowing Management**:
+  - Process borrowing requests (approve/reject)
+  - View all user borrowings system-wide
+  - Update borrowing status manually (pending/approved/rejected/returned)
+  - Monitor borrowing history and current borrowings
+  - Handle returns and special cases through the admin interface
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### User Interface
+- Responsive design using Bootstrap
+- DataTables for efficient data display and search
+- SweetAlert2 for improved user interactions
+- AJAX-based operations for seamless experience
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Technical Architecture
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Backend
+- Laravel 12.x framework
+- PHP 8.4+
+- MySQL database
+- RESTful API architecture
+- Service-oriented design pattern
 
-## Laravel Sponsors
+### Frontend
+- Bootstrap 5
+- jQuery
+- DataTables.js for dynamic tables
+- SweetAlert2 for modals and notifications
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Security Features
+- CSRF protection
+- Form validation (server and client-side)
+- Authentication middleware
+- Role-based access control
 
-### Premium Partners
+## Directory Structure
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+The application follows Laravel's standard directory structure with additional service-oriented architecture:
 
-## Contributing
+```
+app/
+├── Http/
+│   ├── Controllers/
+│   │   ├── BookController.php
+│   │   ├── BorrowingController.php
+│   └── Requests/
+│       ├── Book/
+│       ├── Borrowing/
+├── Models/
+│   ├── Book.php
+│   ├── Borrowing.php
+│   ├── Genre.php
+│   ├── User.php
+├── Services/
+│   ├── Book/
+│   │   ├── BookService.php
+│   │   ├── SetBookDataTable.php
+│   ├── BorrowingServices/
+│       ├── BorrowingCreateService.php
+│       ├── BorrowingDataTableService.php
+│       ├── BorrowingDetailService.php
+│       ├── BorrowingStatusService.php
+public/
+├── js/
+│   ├── books/
+│   │   ├── datatable.js
+│   │   ├── borrow.js
+│   │   ├── delete.js
+│   │   ├── edit.js
+│   ├── borrowings/
+resources/
+├── views/
+    ├── layouts/
+    │   ├── book-layout.blade.php
+    │   ├── borrowing-layout.blade.php
+    │   ├── guest.blade.php
+    ├── components/
+    ├── books/
+    ├── borrowings/
+    ├── profile/
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Service Classes
 
-## Code of Conduct
+The application uses service classes to maintain clean separation of concerns:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Book Services
+- **BookService**: Handles book CRUD operations
+- **SetBookDataTable**: Configures DataTables for book display
 
-## Security Vulnerabilities
+### Borrowing Services
+- **BorrowingCreateService**: Manages borrowing request creation
+- **BorrowingDataTableService**: Configures DataTables for borrowing display
+- **BorrowingDetailService**: Retrieves borrowing details with related information
+- **BorrowingStatusService**: Handles status changes (approve, reject, return)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Installation & Setup
 
-## License
+### Prerequisites
+- PHP 8.1 or higher
+- Composer
+- MySQL
+- Node.js and NPM
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Setup Steps
+
+1. Clone the repository
+   ```
+   git clone https://github.com/Osama-A-Abbas/LibraryManagementSystem.git
+   cd to project dir
+   ```
+
+2. Install PHP dependencies
+   ```
+   composer install
+   ```
+
+3. Install frontend dependencies
+   ```
+   npm install && npm run dev
+   ```
+
+4. Configure environment
+   ```
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+5. Configure database in `.env` file
+   ```
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=library_db
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
+
+6. Run migrations and seed database
+   ```
+   php artisan migrate --seed
+   ```
+
+7. Configure storage links
+   ```
+   php artisan storage:link
+   ```
+
+8. Start the development server
+   ```
+   php artisan serve
+   ```
+
+## Usage
+
+### Default User Accounts
+- Admin: admin@example.com / password   | all permissions granted
+- User: user@example.com / password
+
+### Book Management
+1. Navigate to the Books section
+2. Use the DataTable to view, search, and sort books
+3. Admin users can add, edit, and delete books
+4. Upload cover images and PDF versions of books
+
+### Borrowing Process
+1. Click "Borrow" button on a book
+2. Select borrow and return dates
+3. Submit request
+4. Admin approves or rejects the request
+5. Return books by clicking "Return" in the borrowings section
+
+## API Endpoints
+
+### Books
+- `GET /books/index`: List all books
+- `POST /books`: Create new book
+- `PUT /books/{id}`: Update book
+- `DELETE /books/{id}`: Delete book
+
+### Borrowings
+- `GET /borrowings`: List borrowings
+- `POST /borrowing`: Create borrowing request
+- `GET /borrowings/{id}`: View borrowing details
+- `PUT /borrowings/{id}`: Update borrowing status
+
+## Development Guidelines
+
+### Adding New Features
+1. Create appropriate migrations
+2. Define model relationships
+3. Implement services for business logic
+4. Create controller methods
+5. Define routes
+6. Create blade templates and JavaScript
+
+### Coding Standards
+- Follow PSR-12 coding standards
+- Use type hints and return types
+- Implement form requests for validation
+- Use services for business logic
+- Add PHPDoc comments
+
+## Contributors
+
+- Osama Ali Abbas - 
