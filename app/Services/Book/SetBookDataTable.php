@@ -64,7 +64,7 @@ class SetBookDataTable
             $this->getViewButton($book),
             $this->getDownloadButton($book),
             $this->getBorrowButton($book),
-            $this->getReturnButton($book)
+            // $this->getReturnButton($book)
         ]);
 
         return $buttons->filter()->implode('');
@@ -121,10 +121,11 @@ class SetBookDataTable
         return $this->createButton('borrow', 'warning', 'Borrow', $book->id);
     }
 
-    protected function getReturnButton($book): string
-    {
-        return $this->createButton('return', 'secondary', 'Return', $book->id);
-    }
+    // -------------------  return button  -----------------------------\\
+    // protected function getReturnButton($book): string
+    // {
+    //     return $this->createButton('return', 'secondary', 'Return', $book->id);
+    // }
 
     protected function userHasActiveBorrowing(int $bookId): bool
     {
