@@ -121,7 +121,7 @@ class SetBookDataTable
         return $this->createButton('borrow', 'warning', 'Borrow', $book->id);
     }
 
-    // -------------------  return button  -----------------------------\\
+    // -------------------  return button / not needed for now / implement in borrowing  -----------------------------\\
     // protected function getReturnButton($book): string
     // {
     //     return $this->createButton('return', 'secondary', 'Return', $book->id);
@@ -131,9 +131,9 @@ class SetBookDataTable
     {
         return $this->auth->check() &&
             $this->borrowing->where('book_id', $bookId)
-                ->where('user_id', $this->auth->id())
-                ->where('borrowing_status', '!=', 'returned')
-                ->exists();
+            ->where('user_id', $this->auth->id())
+            ->where('borrowing_status', '!=', 'returned')
+            ->exists();
     }
 
     protected function createButton(
