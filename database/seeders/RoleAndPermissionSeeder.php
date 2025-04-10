@@ -24,10 +24,12 @@ class RoleAndPermissionSeeder extends Seeder
           Permission::create(['name' => 'delete books']); //admin
 
 
-          Permission::create(['name' => 'view borrowings']); //admin & user
-          Permission::create(['name' => 'create borrowings']); //admin & user
+          Permission::create(['name' => 'view all borrowings']); //admin & user
           Permission::create(['name' => 'edit borrowings']); //admin & user
           Permission::create(['name' => 'delete borrowings']); //admin
+          Permission::create(['name' => 'accept borrowings request']); //admin
+          Permission::create(['name' => 'update borrowings status']); //admin
+
 
           Permission::create(['name' => 'view users']);
           Permission::create(['name' => 'edit users']);
