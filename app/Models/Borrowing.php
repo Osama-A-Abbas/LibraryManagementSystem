@@ -31,6 +31,11 @@ class Borrowing extends Model
         'borrowing_status' => 'string',
     ];
 
+    public function getDateAtAttribute($value)
+    {
+        return $value ? \Carbon\Carbon::parse($value)->format('Y-m-d') : null;
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

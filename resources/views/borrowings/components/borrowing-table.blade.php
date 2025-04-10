@@ -4,7 +4,7 @@
 @endphp
 
 <div class="row">
-    <div class="col-md-10 offset-1" style="margin-top: 100px">
+    <div class="col-md-12" style="margin-top: 50px">
         <h1>Borrowing Management</h1>
         <p>
             @if(Auth::check() && Auth::user()->can('view all borrowings'))

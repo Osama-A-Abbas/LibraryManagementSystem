@@ -1,13 +1,14 @@
 <!-- Book Table Component -->
 @php
     use Illuminate\Support\Facades\Auth;
+    $isAdmin = Auth::check() && Auth::user()->can('create books');
 @endphp
 
 <div class="row">
     <div class="col-md-12" style="margin-top: 50px">
-        <h1>Book Management</h1>
+        <h1>{{ $isAdmin ? 'Browse and Manage Books' : 'Browse Books' }}</h1>
 
-        @if (Auth::check() && Auth::user()->can('create books'))
+        @if ($isAdmin)
             <a class="btn btn-info mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Book</a>
         @endif
 
