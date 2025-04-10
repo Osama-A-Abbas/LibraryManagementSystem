@@ -23,4 +23,7 @@ $(document).ready(function() {
 
     // Initialize delete handlers
     initDeleteHandlers(table);
+
+    // Initialize tooltips for buttons
+    initTooltips();
 });

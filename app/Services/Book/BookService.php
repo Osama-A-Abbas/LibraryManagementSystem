@@ -3,6 +3,7 @@
 namespace App\Services\Book;
 
 use App\Models\Book;
+use App\Models\Borrowing;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +24,8 @@ class BookService
      */
     public function setBookDataTable(): \Yajra\DataTables\DataTableAbstract
     {
-        $books = $this->book->select(['id', 'title', 'genre', 'author', 'description', 'published_at', 'cover_page']);
+        $books = $this->book->select(['id', 'title', 'genre', 'author', 'description', 'published_at', 'cover_page', 'is_available']);
+        $currentUserId = Auth::id();
 
         return datatables()->of($books)
             ->editColumn('genre', fn($book) => ucfirst($book->genre))
@@ -32,7 +34,7 @@ class BookService
                     ? '<img src="' . asset('storage/' . $book->cover_page) . '" alt="Book Cover" class="img-thumbnail" style="max-height: 50px;">'
                     : 'No Cover';
             })
-            ->addColumn('action', function ($row) {
+            ->addColumn('action', function ($row) use ($currentUserId) {
                 $buttons = '';
 
                 // Check if user has permission to edit books
@@ -45,22 +47,44 @@ class BookService
                     $buttons .= '<a href="javascript:void(0)" class="btn btn-sm btn-danger deleteButton" data-id="' . $row->id . '">Delete</a>';
                 }
 
-                if (Auth::check() && Gate::allows('borrow-book')) {
-                    $buttons .= ' <a href="javascript:void(0)" class="btn btn-sm btn-warning borrowButton" data-id="' . $row->id . '" data-is-available="true">Borrow</a>';
+                // Add view and download buttons
+                $buttons .= '<a href="javascript:void(0)" class="btn btn-sm btn-primary viewButton" data-id="' . $row->id . '">View</a>
+                        <a href="javascript:void(0)" class="btn btn-sm btn-success downloadButton" data-id="' . $row->id . '">Download</a>';
+
+                // Check if the book is available and if the user has already borrowed it
+                $userHasActiveBorrowing = false;
+
+                if (Auth::check()) {
+                    $userHasActiveBorrowing = Borrowing::where('book_id', $row->id)
+                        ->where('user_id', $currentUserId)
+                        ->where('borrowing_status', '!=', 'returned')
+                        ->exists();
                 }
 
-                // Add other buttons that don't require special permissions
-                $buttons .= '<a href="javascript:void(0)" class="btn btn-sm btn-primary viewButton" data-id="' . $row->id . '">View</a>
-                        <a href="javascript:void(0)" class="btn btn-sm btn-success downloadButton" data-id="' . $row->id . '">Download</a>
-                        <a href="javascript:void(0)" class="btn btn-sm btn-warning borrowButton" data-id="' . $row->id . '" data-is-available="true">Borrow</a>
-                        <a href="javascript:void(0)" class="btn btn-sm btn-secondary returnButton" data-id="' . $row->id . '">Return</a>';
+                // Determine if borrow button should be disabled and why
+                if (!$row->is_available) {
+                    $buttons .= '<a href="javascript:void(0)" class="btn btn-sm btn-warning borrowButton disabled"
+                            data-id="' . $row->id . '"
+                            data-bs-toggle="tooltip"
+                            title="This book is currently not available for borrowing">Borrow</a>';
+                } elseif ($userHasActiveBorrowing) {
+                    $buttons .= '<a href="javascript:void(0)" class="btn btn-sm btn-warning borrowButton disabled"
+                            data-id="' . $row->id . '"
+                            data-bs-toggle="tooltip"
+                            title="You have already borrowed this book">Borrow</a>';
+                } else {
+                    $buttons .= '<a href="javascript:void(0)" class="btn btn-sm btn-warning borrowButton"
+                            data-id="' . $row->id . '">Borrow</a>';
+                }
+
+                // Return button
+                $buttons .= '<a href="javascript:void(0)" class="btn btn-sm btn-secondary returnButton" data-id="' . $row->id . '">Return</a>';
 
                 return $buttons;
             })
             ->rawColumns(['action', 'cover_page']);
     }
 
-    private
     //---------------------------------------------------------------------------------------------\\
     // ------------  BookController Store + Update methods and helpers -----------------------------\\
 

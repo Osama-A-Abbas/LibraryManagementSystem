@@ -37,6 +37,7 @@
     <script src="{{ asset('js/books/modal.js') }}"></script>
     <script src="{{ asset('js/books/delete.js') }}"></script>
     <script src="{{ asset('js/books/edit.js') }}"></script>
+    <script src="{{ asset('js/books/tooltip.js') }}"></script>
     <script src="{{ asset('js/books/main.js') }}"></script>
     <script src="{{ asset('js/books/view-book.js') }}"></script>
     <script src="{{ asset('js/books/borrow.js') }}"></script>
