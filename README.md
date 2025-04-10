@@ -203,16 +203,40 @@ The application uses service classes to maintain clean separation of concerns:
 ## API Endpoints
 
 ### Books
-- `GET /books/index`: List all books
-- `POST /books`: Create new book
-- `PUT /books/{id}`: Update book
-- `DELETE /books/{id}`: Delete book
+- `GET /books`: Display book management page
+- `GET /books/index`: Get all books data (DataTable AJAX)
+- `POST /books/store`: Create a new book
+- `GET /books/{book}/edit`: Get book edit form
+- `POST /books/{book}/update`: Update book information
+- `DELETE /books/{book}/delete`: Delete a book
+- `GET /books/{book}/download`: Download book PDF
+- `GET /books/{book}/view`: View book PDF in browser
 
 ### Borrowings
-- `GET /borrowings`: List borrowings
-- `POST /borrowing`: Create borrowing request
-- `GET /borrowings/{id}`: View borrowing details
-- `PUT /borrowings/{id}`: Update borrowing status
+- `GET /borrowings`: Display borrowings list and dashboard
+- `GET /borrowings/{borrowing}`: Get specific borrowing details
+- `PUT /borrowings/{borrowing}`: Update borrowing status (approve/reject/return)
+- `POST /borrowing`: Create new borrowing request (authenticated users only)
+
+### User Profile
+- `GET /profile`: View user profile
+- `PATCH /profile`: Update user profile information
+- `DELETE /profile`: Delete user account
+
+### Authentication
+- `GET /register`: Display registration form
+- `POST /register`: Create a new user account
+- `GET /login`: Display login form
+- `POST /login`: Authenticate user
+- `POST /logout`: Log out user
+- `GET /forgot-password`: Display password reset request form
+- `POST /forgot-password`: Send password reset link
+- `GET /reset-password/{token}`: Display password reset form
+- `POST /reset-password`: Reset user password
+- `GET /verify-email`: Show email verification notice
+- `GET /verify-email/{id}/{hash}`: Verify email address
+- `POST /email/verification-notification`: Resend verification email
+- `PUT /password`: Update user password
 
 ## Development Guidelines
 
