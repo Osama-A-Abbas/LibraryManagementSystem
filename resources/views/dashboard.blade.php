@@ -18,13 +18,4 @@
         </div>
     </div>
 
-    {{--
-    <div>
-        <x-book-table />
-    </div>
-
-    <div>
-        <x-book-modal />
-    </div> --}}
-
 </x-app-layout>
