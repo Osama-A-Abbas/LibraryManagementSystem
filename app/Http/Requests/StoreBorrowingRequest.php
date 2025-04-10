@@ -23,9 +23,8 @@ class StoreBorrowingRequest extends FormRequest
     {
         return [
             'book_id' => 'required|exists:books,id',
-            // 'borrowing_status' => 'required|in:pending,approved,rejected,returned',
             'borrow_at' => 'required|date',
-            'return_at' => 'nullable|date',
+            'return_at' => 'required|date',
             'notes' => 'nullable|string',
         ];
     }
