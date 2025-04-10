@@ -18,8 +18,8 @@ return new class extends Migration
 
             $table->enum('borrowing_status', ['pending', 'approved', 'rejected', 'returned'])->default('pending')->comment('pending, approved, rejected, returned');
 
-            $table->date('borrow_at')->nullable();
-            $table->date('return_at')->nullable();
+            $table->timestamp('borrow_at')->nullable();
+            $table->timestamp('return_at')->nullable();
             $table->text('notes')->nullable();
 
             $table->timestamps();
