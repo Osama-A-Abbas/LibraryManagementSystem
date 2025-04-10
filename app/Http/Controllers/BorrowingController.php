@@ -53,18 +53,18 @@ class BorrowingController extends Controller
 
                     // Return button (visible to user for their own borrowings)
                     if (Auth::check() && (Auth::id() == $row->user_id) && $row->borrowing_status === 'approved') {
-                        $buttons .= '<a href="javascript:void(0)" class="btn btn-sm btn-primary returnButton" data-id="' . $row->id . '">Return</a> ';
+                        $buttons .= '<a href="javascript:void(0)" class="btn btn-sm btn-primary returnButton me-1" data-id="' . $row->id . '">Return</a> ';
                     }
 
                     // Admin actions for pending borrowings
                     if (Auth::check() && Auth::user()->can('update borrowings status') && $row->borrowing_status === 'pending') {
-                        $buttons .= '<a href="javascript:void(0)" class="btn btn-sm btn-success approveButton" data-id="' . $row->id . '">Approve</a> ';
-                        $buttons .= '<a href="javascript:void(0)" class="btn btn-sm btn-danger rejectButton" data-id="' . $row->id . '">Reject</a> ';
+                        $buttons .= '<a href="javascript:void(0)" class="btn btn-sm btn-success approveButton me-1" data-id="' . $row->id . '">Approve</a> ';
+                        $buttons .= '<a href="javascript:void(0)" class="btn btn-sm btn-danger rejectButton me-1" data-id="' . $row->id . '">Reject</a> ';
                     }
 
                     // Manage button for admins
                     if (Auth::check() && Auth::user()->can('edit borrowings')) {
-                        $buttons .= '<a href="javascript:void(0)" class="btn btn-sm btn-info manageButton" data-id="' . $row->id . '">Manage</a> ';
+                        $buttons .= '<a href="javascript:void(0)" class="btn btn-sm btn-info manageButton me-1" data-id="' . $row->id . '">Manage</a> ';
                     }
 
                     // View detail button for everyone
