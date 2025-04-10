@@ -262,7 +262,7 @@ The application uses service classes to maintain clean separation of concerns:
 
 ## Contributors
 
-- Osama Ali Abbas -
+- Osama Ali Abbas 
 
 ## Overview Video: https://youtu.be/HLiymJSrucA
 
