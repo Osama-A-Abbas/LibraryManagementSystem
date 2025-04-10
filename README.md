@@ -275,3 +275,4 @@ The application uses service classes to maintain clean separation of concerns:
 ![image](https://github.com/user-attachments/assets/50c00f93-3a68-4092-8d05-34de964b0fbf)
 
 
+![image](https://github.com/user-attachments/assets/a5fce27b-abfb-4fac-8dac-9e2b0b103604)
