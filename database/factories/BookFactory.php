@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Book;
+use App\Models\Genre;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -20,26 +21,14 @@ class BookFactory extends Factory
 
     public function definition(): array
     {
-        $genres = [
-            'Fiction', 'Non-Fiction', 'Science Fiction', 'Fantasy', 'Mystery',
-            'Biography', 'Self-Help', 'Romance', 'Thriller', 'Historical',
-            'Poetry', 'Graphic Novel', "Children's", 'Young Adult', 'Cookbook',
-            'Travel', 'Health', 'Religion', 'Philosophy', 'Business',
-            'Technology', 'True Crime', 'Memoir', 'Action', 'Adventure',
-            'Comedy', 'Drama', 'Horror', 'Western',
-        ];
-
         // Generate a random date between 20 years ago and today
         $publishDate = $this->faker->dateTimeBetween('-20 years', 'now');
 
         // Generate a random number of copies between 0 and 50
         $copies = $this->faker->numberBetween(0, 50);
 
-        // Available is automatically set by the model based on copies
-
         return [
             'title' => rtrim($this->faker->sentence(rand(3, 8)), '.'),
-            'genre' => $this->faker->randomElement($genres),
             'author' => $this->faker->name(),
             'isbn' => $this->faker->isbn13(),
             'description' => $this->faker->paragraphs(rand(1, 3), true),
@@ -48,6 +37,20 @@ class BookFactory extends Factory
             // is_available will be set automatically by the model's saving event
             // cover_page and book_pdf are not set by the factory as they're file paths
         ];
+    }
+
+    /**
+     * Configure the model factory.
+     *
+     * @return $this
+     */
+    public function configure()
+    {
+        return $this->afterCreating(function (Book $book) {
+            // Attach 1-3 random genres to each book
+            $genres = Genre::inRandomOrder()->take(fake()->numberBetween(1, 3))->get();
+            $book->genres()->attach($genres);
+        });
     }
 
     /**

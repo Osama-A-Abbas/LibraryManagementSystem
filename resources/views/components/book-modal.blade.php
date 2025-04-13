@@ -7,9 +7,10 @@
                     <h5 class="modal-title" id="modalTitle"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body"> <!--HERE YOU CAN ADD NEW FIELDS     -->
+                <div class="modal-body">
                     <input type="hidden" name="book_id" id="book_id">
-                    <!-- TITLE, id = title-->
+
+                    <!-- TITLE -->
                     <div class="form-group mb-3">
                         <label for="title">Book Title</label>
                         <input type="text" id="title" name="title" class="form-control"
@@ -17,46 +18,19 @@
                         <span id="titleError" class="text-danger error-messages"></span>
                     </div>
 
-                    <!--GENRE, id = genre-->
+                    <!-- GENRES -->
                     <div class="form-group mb-3">
-                        <label for="genre">Genre</label>
-                        <select id="genre" name="genre" class="form-control">
-                            <option disabled selected>Choose Genre...</option>
-                            <option value="fiction">Fiction</option>
-                            <option value="nonfiction">Non-Fiction</option>
-                            <option value="science_fiction">Science Fiction</option>
-                            <option value="fantasy">Fantasy</option>
-                            <option value="mystery">Mystery</option>
-                            <option value="biography">Biography</option>
-                            <option value="self_help">Self-Help</option>
-                            <option value="romance">Romance</option>
-                            <option value="thriller">Thriller</option>
-                            <option value="historical">Historical</option>
-                            <option value="poetry">Poetry</option>
-                            <option value="graphic_novel">Graphic Novel</option>
-                            <option value="children">Children's</option>
-                            <option value="young_adult">Young Adult</option>
-                            <option value="cookbook">Cookbook</option>
-                            <option value="travel">Travel</option>
-                            <option value="health">Health</option>
-                            <option value="religion">Religion</option>
-                            <option value="philosophy">Philosophy</option>
-                            <option value="business">Business</option>
-                            <option value="technology">Technology</option>
-                            <option value="true_crime">True Crime</option>
-                            <option value="memoir">Memoir</option>
-                            <option value="action">Action</option>
-                            <option value="adventure">Adventure</option>
-                            <option value="comedy">Comedy</option>
-                            <option value="drama">Drama</option>
-                            <option value="horror">Horror</option>
-                            <option value="western">Western</option>
+                        <label for="genres">Genres</label>
+                        <select id="genres" name="genres[]" class="form-select" multiple>
+                            @foreach(\App\Models\Genre::orderBy('name')->get() as $genre)
+                                <option value="{{ $genre->id }}">{{ $genre->name }}</option>
+                            @endforeach
                         </select>
-                        <span id="genreError" class="text-danger error-messages"></span>
+                        <small class="form-text text-muted">You can select multiple genres</small>
+                        <span id="genresError" class="text-danger error-messages"></span>
                     </div>
 
-
-                    <!-- AUTHOR, id = author-->
+                    <!-- AUTHOR -->
                     <div class="form-group mb-3">
                         <label for="author">Author</label>
                         <input type="text" id="author" name="author" class="form-control"
@@ -64,21 +38,21 @@
                         <span id="authorError" class="text-danger error-messages"></span>
                     </div>
 
-                    <!-- DESCRIPTION, id = description-->
+                    <!-- DESCRIPTION -->
                     <div class="form-group mb-3">
                         <label for="description">Description</label>
                         <textarea id="description" name="description" class="form-control" rows="3" placeholder="Book description..."></textarea>
                         <span id="descriptionError" class="text-danger error-messages"></span>
                     </div>
 
-                    <!-- PUBLISHED AT, id = published_at-->
+                    <!-- PUBLISHED AT -->
                     <div class="form-group mb-3">
                         <label for="published_at">Published Date</label>
                         <input type="date" id="published_at" name="published_at" class="form-control" />
                         <span id="published_atError" class="text-danger error-messages"></span>
                     </div>
 
-                    <!-- COVER PAGE, id = cover_page-->
+                    <!-- COVER PAGE -->
                     <div class="form-group mb-3">
                         <label for="cover_page">Cover Image</label>
                         <input type="file" id="cover_page" name="cover_page" class="form-control" accept="image/*" />
@@ -86,7 +60,7 @@
                         <div id="cover_preview" class="mt-2"></div>
                     </div>
 
-                    <!-- BOOK PDF, id = book_pdf-->
+                    <!-- BOOK PDF -->
                     <div class="form-group mb-3">
                         <label for="book_pdf">Book PDF File</label>
                         <input type="file" id="book_pdf" name="book_pdf" class="form-control"
@@ -94,7 +68,7 @@
                         <span id="book_pdfError" class="text-danger error-messages"></span>
                     </div>
 
-                    <!--number_of_copies-->
+                    <!-- NUMBER OF COPIES -->
                     <div class="form-group mb-3">
                         <label for="number_of_copies">Number of Copies in Stock</label>
                         <input type="number" id="number_of_copies" name="number_of_copies" class="form-control"
@@ -111,3 +85,91 @@
         </div>
     </form>
 </div>
+
+@push('styles')
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<style>
+    .select2-container {
+        width: 100% !important;
+    }
+    .select2-container--default .select2-selection--multiple {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        min-height: 38px;
+        padding: 2px;
+    }
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        background-color: #0d6efd;
+        border: none;
+        color: white;
+        padding: 2px 8px;
+        margin: 2px;
+        border-radius: 16px;
+    }
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+        color: white;
+        margin-right: 5px;
+    }
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+        color: #fff;
+        background: transparent;
+    }
+</style>
+@endpush
+
+@push('scripts')
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Initialize Select2
+        function initSelect2() {
+            $('#genres').select2({
+                width: '100%',
+                placeholder: 'Select genres',
+                allowClear: true,
+                closeOnSelect: false,
+                dropdownParent: $('#exampleModal')
+            });
+        }
+
+        // Initialize on document ready
+        initSelect2();
+
+        // Re-initialize when modal is shown
+        $('#exampleModal').on('shown.bs.modal', function () {
+            initSelect2();
+        });
+
+        // Clear on modal hide
+        $('#exampleModal').on('hidden.bs.modal', function () {
+            $('#genres').val(null).trigger('change');
+        });
+
+        // Handle edit button click
+        $(document).on('click', '.editButton', function() {
+            const bookId = $(this).data('id');
+
+            $.ajax({
+                url: `/books/${bookId}/edit`,
+                type: 'GET',
+                success: function(response) {
+                    if (response.genres && response.genres.length > 0) {
+                        const genreIds = response.genres.map(genre => genre.id);
+                        $('#genres').val(genreIds).trigger('change');
+                    }
+                },
+                error: function(error) {
+                    console.error('Error fetching book details:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Failed to load book details. Please try again.'
+                    });
+                }
+            });
+        });
+    });
+</script>
+@endpush
