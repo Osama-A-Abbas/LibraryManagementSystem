@@ -4,7 +4,7 @@ namespace App\Http\Requests\Book;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateBookRequest extends FormRequest
+class   UpdateBookRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +23,8 @@ class UpdateBookRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:500',
-            'genres' => 'required|array',
-            'genres.*' => 'exists:genres,id',
+            'genres' => 'required|array|min:1',
+            'genres.*' => 'required|exists:genres,id',
             'author' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
             'published_at' => 'required|date',

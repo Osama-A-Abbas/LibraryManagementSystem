@@ -23,8 +23,8 @@ class StoreBookRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:500',
-            'genres' => 'required|array',
-            'genres.*' => 'exists:genres,id',
+            'genres' => 'required|array|min:1',
+            'genres.*' => 'required|exists:genres,id',
             'author' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
             'published_at' => 'required|date',

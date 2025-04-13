@@ -25,8 +25,13 @@ class BookService
         try {
             DB::beginTransaction();
 
-            $book = $this->book->create($request->only(['title', 'genre', 'author', 'description', 'published_at', 'number_of_copies']));
-            $book->save(); // Save first to get ID
+            $book = $this->book->create($request->only([
+                'title',
+                'author',
+                'description',
+                'published_at',
+                'number_of_copies'
+            ]));
 
             // Upload files using book ID
             if ($request->hasFile('cover_page')) {
@@ -37,7 +42,7 @@ class BookService
                 $book->book_pdf = $this->handleFileUpload($request->file('book_pdf'), "books/{$book->id}/pdf");
             }
 
-            $book->save(); // Save again to persist file paths
+            $book->save();
 
             DB::commit();
             return $book;
@@ -71,7 +76,13 @@ class BookService
         try {
             DB::beginTransaction();
 
-            $book->update($request->only(['title', 'genre', 'author', 'description', 'published_at', 'number_of_copies']));
+            $book->update($request->only([
+                'title',
+                'author',
+                'description',
+                'published_at',
+                'number_of_copies'
+            ]));
 
             if ($request->hasFile('cover_page')) {
                 $this->deleteFileIfExists($book->cover_page);
