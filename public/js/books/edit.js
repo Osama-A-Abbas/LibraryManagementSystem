@@ -15,15 +15,22 @@ function initEditHandlers(table) {
             type: 'GET',
             success: function(response) {
                 console.log('Server response:', response);
+
                 $('#book_id').val(response.id);
                 $('#title').val(response.title);
-                $('#genre').val(response.genre);
+
+                // Handle multiple genres
+                const genreSelect = $('#genres');
+                genreSelect.val(null); // Clear previous selections
+                if (response.genres && response.genres.length > 0) {
+                    const genreIds = response.genres.map(genre => genre.id);
+                    genreSelect.val(genreIds);
+                }
+
                 $('#author').val(response.author);
                 $('#description').val(response.description);
                 $('#published_at').val(response.published_at);
-                console.log('Setting number_of_copies to:', response.number_of_copies);
                 $('#number_of_copies').val(response.number_of_copies);
-                console.log('number_of_copies field value after setting:', $('#number_of_copies').val());
 
                 // Display existing cover image if available
                 if (response.cover_page) {

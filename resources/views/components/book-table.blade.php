@@ -18,7 +18,7 @@
                     <th scope="col">#</th>
                     <th scope="col">Cover</th>
                     <th scope="col">Title</th>
-                    <th scope="col">Genre</th>
+                    <th scope="col">Genres</th>
                     <th scope="col">Author</th>
                     <th scope="col">Description</th>
                     <th scope="col">Published Date</th>

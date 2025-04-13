@@ -7,6 +7,7 @@ use App\Http\Requests\Book\UpdateBookRequest;
 use App\Models\Book;
 use App\Services\Book\BookService;
 use App\Services\Book\SetBookDataTable;
+use Illuminate\Support\Facades\Log;
 
 /**
  * BookController handles all book-related operations in the library system.
@@ -62,7 +63,13 @@ class BookController extends Controller
     public function store(StoreBookRequest $request)
     {
         try {
-            $this->bookService->storeBook($request);
+            $book = $this->bookService->storeBook($request);
+
+            // Sync genres
+            if ($request->has('genres')) {
+                $book->genres()->sync($request->genres);
+            }
+
             return response()->json(['success' => 'Book created successfully.']);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to create book: ' . $e->getMessage()], 500);
@@ -77,16 +84,18 @@ class BookController extends Controller
      */
     public function edit(Book $book)
     {
-        return response()->json([
+        $response = [
             'id' => $book->id,
             'title' => $book->title,
-            'genre' => $book->genre,
+            'genres' => $book->genres,
             'author' => $book->author,
             'description' => $book->description,
             'published_at' => $book->published_at,
             'cover_page' => $book->cover_page ? asset('storage/' . $book->cover_page) : null,
             'number_of_copies' => $book->number_of_copies,
-        ]);
+        ];
+
+        return response()->json($response);
     }
 
     /**
@@ -100,6 +109,12 @@ class BookController extends Controller
     {
         try {
             $this->bookService->updateBook($request, $book);
+
+            // Sync genres
+            if ($request->has('genres')) {
+                $book->genres()->sync($request->genres);
+            }
+
             return response()->json(['success' => 'Book updated successfully.']);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to update book: ' . $e->getMessage()], 500);

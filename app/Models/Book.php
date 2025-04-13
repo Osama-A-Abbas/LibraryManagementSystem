@@ -7,12 +7,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Carbon\Carbon;
 
 /**
  * @property int $id
  * @property string $title
- * @property string $genre
  * @property string $author
  * @property string|null $cover_page
  * @property string|null $book_pdf
@@ -35,7 +35,6 @@ final class Book extends Model
      */
     protected $fillable = [
         'title',
-        'genre',
         'author',
         'cover_page',
         'book_pdf',
@@ -72,6 +71,16 @@ final class Book extends Model
     public function borrowings(): HasMany
     {
         return $this->hasMany(Borrowing::class);
+    }
+
+    /**
+     * Get the genres that belong to the book.
+     *
+     * @return BelongsToMany<Genre>
+     */
+    public function genres(): BelongsToMany
+    {
+        return $this->belongsToMany(Genre::class);
     }
 
     /**

@@ -45,10 +45,9 @@ class SetBookDataTable
      */
     public function handle(): \Yajra\DataTables\DataTableAbstract
     {
-        $books = $this->book->select([
+        $books = $this->book->with('genres')->select([
             'id',
             'title',
-            'genre',
             'author',
             'description',
             'published_at',
@@ -57,7 +56,9 @@ class SetBookDataTable
         ]);
 
         return $this->dataTables->of($books)
-            ->editColumn('genre', fn($book) => ucfirst($book->genre))
+            ->addColumn('genres', function ($book) {
+                return $book->genres->pluck('name')->implode(', ');
+            })
             ->editColumn('cover_page', $this->getCoverImageColumn())
             ->addColumn('action', function ($row) {
                 return $this->buildActionButtons($row);
