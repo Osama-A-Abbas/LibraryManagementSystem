@@ -264,8 +264,7 @@ The application uses service classes to maintain clean separation of concerns:
  - Some parts of the code can improved by using middlewares, polices, and gates.
  - The Borrowing javascript files can be distributed into smaller functions for better readability and maintainability
  - Complete the system cycle by adding the following systems (Delivery, Payment, BookProviders (Libraries)).
- - Improving the UI design, and the blade components usage.
- - Genre should be separated into a separate model, with a book_genre pivot table to enable accurate relations between the models e.g(book, book_genre, genre).  
+ - Improving the UI design, and the blade components usage.  
  - Applying morph relation if possible, as for the current developed project I saw no place for morph relation
 
 
