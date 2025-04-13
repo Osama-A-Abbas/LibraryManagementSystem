@@ -1,15 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Observers;
 
 use App\Models\Borrowing;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
-class BorrowingObserver
+/**
+ * Observer for the Borrowing model.
+ * Handles book copy management when borrowings are created.
+ */
+final class BorrowingObserver
 {
     /**
      * Handle the Borrowing "created" event.
+     * Decrements the number of available copies when a book is borrowed.
+     *
+     * @param Borrowing $borrowing The borrowing instance that was created
+     * @return void
      */
     public function created(Borrowing $borrowing): void
     {
