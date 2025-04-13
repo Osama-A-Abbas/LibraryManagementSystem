@@ -17,7 +17,32 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="https://cdn.datatables.net/v/dt/dt-2.2.2/datatables.min.css" rel="stylesheet"
         integrity="sha384-2vMryTPZxTZDZ3GnMBDVQV8OtmoutdrfJxnDTg0bVam9mZhi7Zr3J1+lkVFRr71f" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
 
+    <style>
+        .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__choice {
+            background-color: #0d6efd;
+            border: none;
+            color: white;
+            padding: 2px 8px;
+            margin: 2px;
+            border-radius: 16px;
+        }
+        .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__choice__remove {
+            color: white;
+            margin-right: 5px;
+        }
+        .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__choice__remove:hover {
+            color: #fff;
+            background: transparent;
+        }
+        .select2-container--bootstrap-5 .select2-selection {
+            min-height: 38px;
+        }
+    </style>
+
+    @stack('styles')
     @yield('styles')
 </head>
 
@@ -92,6 +117,7 @@
     <script src="https://cdn.datatables.net/v/dt/dt-2.2.2/datatables.min.js"
         integrity="sha384-2Ul6oqy3mEjM7dBJzKOck1Qb/mzlO+k/0BQv3D3C7u+Ri9+7OBINGa24AeOv5rgu" crossorigin="anonymous">
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <!-- Load our JavaScript files -->
     <script src="{{ asset('js/books/utils.js') }}"></script>
@@ -104,7 +130,9 @@
     <script src="{{ asset('js/books/view-book.js') }}"></script>
     <script src="{{ asset('js/books/borrow.js') }}"></script>
     <script src="{{ asset('js/books/download.js') }}"></script>
+    <script src="{{ asset('js/books/select2-init.js') }}"></script>
 
+    @stack('scripts')
     @yield('scripts')
 </body>
 

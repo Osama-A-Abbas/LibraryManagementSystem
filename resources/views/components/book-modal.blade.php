@@ -21,12 +21,12 @@
                     <!-- GENRES -->
                     <div class="form-group mb-3">
                         <label for="genres">Genres</label>
-                        <select id="genres" name="genres[]" class="form-control" multiple>
-                            @foreach(\App\Models\Genre::all() as $genre)
+                        <select id="genres" name="genres[]" class="form-select" multiple>
+                            @foreach(\App\Models\Genre::orderBy('name')->get() as $genre)
                                 <option value="{{ $genre->id }}">{{ $genre->name }}</option>
                             @endforeach
                         </select>
-                        <small class="form-text text-muted">Hold Ctrl/Cmd to select multiple genres</small>
+                        <small class="form-text text-muted">You can select multiple genres</small>
                         <span id="genresError" class="text-danger error-messages"></span>
                     </div>
 
@@ -85,3 +85,91 @@
         </div>
     </form>
 </div>
+
+@push('styles')
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<style>
+    .select2-container {
+        width: 100% !important;
+    }
+    .select2-container--default .select2-selection--multiple {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        min-height: 38px;
+        padding: 2px;
+    }
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        background-color: #0d6efd;
+        border: none;
+        color: white;
+        padding: 2px 8px;
+        margin: 2px;
+        border-radius: 16px;
+    }
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+        color: white;
+        margin-right: 5px;
+    }
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+        color: #fff;
+        background: transparent;
+    }
+</style>
+@endpush
+
+@push('scripts')
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Initialize Select2
+        function initSelect2() {
+            $('#genres').select2({
+                width: '100%',
+                placeholder: 'Select genres',
+                allowClear: true,
+                closeOnSelect: false,
+                dropdownParent: $('#exampleModal')
+            });
+        }
+
+        // Initialize on document ready
+        initSelect2();
+
+        // Re-initialize when modal is shown
+        $('#exampleModal').on('shown.bs.modal', function () {
+            initSelect2();
+        });
+
+        // Clear on modal hide
+        $('#exampleModal').on('hidden.bs.modal', function () {
+            $('#genres').val(null).trigger('change');
+        });
+
+        // Handle edit button click
+        $(document).on('click', '.editButton', function() {
+            const bookId = $(this).data('id');
+
+            $.ajax({
+                url: `/books/${bookId}/edit`,
+                type: 'GET',
+                success: function(response) {
+                    if (response.genres && response.genres.length > 0) {
+                        const genreIds = response.genres.map(genre => genre.id);
+                        $('#genres').val(genreIds).trigger('change');
+                    }
+                },
+                error: function(error) {
+                    console.error('Error fetching book details:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Failed to load book details. Please try again.'
+                    });
+                }
+            });
+        });
+    });
+</script>
+@endpush
