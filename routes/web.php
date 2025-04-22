@@ -14,11 +14,12 @@ Route::get('/', function () {
 //Book Controller
 Route::get('/books', [BookController::class, 'create'])->name('books.create');
 Route::get('/books/index', [BookController::class, 'index'])->name('books.index');
-Route::post('/books/store', [BookController::class, 'store'])->name('books.store');
-Route::get('/books/{book}/edit', [BookController::class, 'edit'])->name('books.edit');
-Route::post('/books/{book}/update', [BookController::class, 'update'])->name('books.update');
-Route::delete('/books/{book}/delete', [BookController::class, 'destroy'])->name('books.destroy');
-
+Route::middleware('auth')->group(function () {
+    Route::post('/books/store', [BookController::class, 'store'])->name('books.store');
+    Route::get('/books/{book}/edit', [BookController::class, 'edit'])->name('books.edit');
+    Route::post('/books/{book}/update', [BookController::class, 'update'])->name('books.update');
+    Route::delete('/books/{book}/delete', [BookController::class, 'destroy'])->name('books.destroy');
+});
 //PDF Controller
 Route::get('/books/{book}/download', [PdfController::class, 'downloadPdf'])->name('books.download');
 Route::get('/books/{book}/view', [PdfController::class, 'viewBookPdf'])->name('books.view');
@@ -37,4 +38,4 @@ Route::middleware('auth')->group(function () {
 });
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
